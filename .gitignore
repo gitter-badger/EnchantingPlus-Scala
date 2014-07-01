@@ -1,0 +1,7 @@
+*.iml
+*.swp
+*.ipr
+*.iws
+/.gradle
+/.idea
+/eclipse
