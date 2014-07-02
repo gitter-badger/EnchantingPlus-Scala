@@ -1,5 +1,7 @@
 package com.aesireanempire.eplus
 
+import com.aesireanempire.eplus.blocks.EplusBlocks
+import com.aesireanempire.eplus.items.EplusItems
 import cpw.mods.fml.common.Mod
 import cpw.mods.fml.common.event._
 
@@ -10,15 +12,20 @@ object EnchantingPlus {
 
   @Mod.EventHandler
   def preInit(event: FMLPreInitializationEvent) {
-    //Config
-    //Register Items
-    //Register Blocks
+    ConfigHandler.init(event.getSuggestedConfigurationFile)
+
+    EplusItems.preInit()
+    EplusBlocks.preInit()
   }
 
   @Mod.EventHandler
   def init(event: FMLInitializationEvent) {
     //Register WorldGen
     //Register Recipes
+
+    EplusItems.init()
+    EplusBlocks.init()
+
     //Register Events
   }
 
