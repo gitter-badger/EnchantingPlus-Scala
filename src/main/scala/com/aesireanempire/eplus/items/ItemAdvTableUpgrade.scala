@@ -5,6 +5,7 @@ import net.minecraft.item.Item
 
 object ItemAdvTableUpgrade extends Item {
 
-  setCreativeTab(CreativeTabItems)
-  setUnlocalizedName("advTableUpgrade")
+    setCreativeTab(CreativeTabItems)
+    setUnlocalizedName("advTableUpgrade")
+    setTextureName("eplus:enchanting_table_upgrade")
 }
