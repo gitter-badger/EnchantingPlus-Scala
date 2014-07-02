@@ -1,4 +1,4 @@
-package com.aesireanempire.eplus.blocks.Entities
+package com.aesireanempire.eplus.blocks.entities
 
 import net.minecraft.tileentity.TileEntity
 
