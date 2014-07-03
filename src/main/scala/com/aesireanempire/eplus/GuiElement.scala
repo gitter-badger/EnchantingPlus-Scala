@@ -1,7 +1,9 @@
 package com.aesireanempire.eplus
 
+import cpw.mods.fml.client.FMLClientHandler
 import net.minecraft.client.gui.Gui
 import net.minecraft.util.ResourceLocation
+import org.lwjgl.opengl.GL11
 
 abstract class GuiElement(val posX: Int, val posY: Int, var width: Int, var height: Int, u: Int,
                           texture: ResourceLocation) extends Gui {
@@ -13,9 +15,20 @@ abstract class GuiElement(val posX: Int, val posY: Int, var width: Int, var heig
     var dragging: Boolean = false
 
 
-    def draw()
+    def draw() {
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
+        FMLClientHandler.instance().getClient.renderEngine.bindTexture(texture)
 
-    def drawTop() {
+        drawTop()
+        drawMiddle()
+        drawBottom()
+
+        drawExtras()
+    }
+
+    def drawExtras()
+
+    private def drawTop() {
         drawTexturedModalRect(posX, posY, u, 0, if (width >= 15) 15 else width, 15)
         if (width > 30) {
             for (x <- posX + 15 to posX + width - 15 by 15) {
@@ -28,7 +41,7 @@ abstract class GuiElement(val posX: Int, val posY: Int, var width: Int, var heig
         }
     }
 
-    def drawMiddle() {
+    private def drawMiddle() {
         if (height >= 30) {
             for (y <- posY + 15 to posY + height - 15 by 15) {
                 drawTexturedModalRect(posX, y, u, 15, if (width >= 15) 15 else width, 15)
@@ -45,7 +58,7 @@ abstract class GuiElement(val posX: Int, val posY: Int, var width: Int, var heig
         }
     }
 
-    def drawBottom() {
+    private def drawBottom() {
         val y: Int = posY + height - 15
         drawTexturedModalRect(posX, y, u, 30, if (width >= 15) 15 else width, 15)
         if (width > 30) {

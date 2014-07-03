@@ -100,14 +100,8 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
 
     class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLocation) extends GuiElement(posX,
         posY, width, height, 48, texture) {
-        override def draw() {
-            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
-            mc.renderEngine.bindTexture(texture)
 
-            drawTop()
-            drawMiddle()
-            drawBottom()
-
+       override def drawExtras() {
             mc.renderEngine.bindTexture(TEXTURE)
             drawTexturedModalRect(posX, posY, 0, 182, 12, 15)
         }
@@ -115,14 +109,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
 
     class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLocation) extends GuiElement(posX,
         posY, width, height, 0, texture) {
-        override def draw(): Unit = {
-            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
-            mc.renderEngine.bindTexture(texture)
 
-            drawTop()
-            drawMiddle()
-            drawBottom()
-        }
+        override def drawExtras() = {}
     }
-
 }
