@@ -1,18 +1,41 @@
-package com.aesireanempire.eplus
+package com.aesireanempire.eplus.gui.elements
 
+import com.aesireanempire.eplus.GUIAdvEnchantment
 import cpw.mods.fml.client.FMLClientHandler
 import net.minecraft.client.gui.Gui
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
 
-abstract class GuiElement(val posX: Int, val posY: Int, var width: Int, var height: Int, u: Int,
-                          texture: ResourceLocation) extends Gui {
-    def setDimension(newWidth: Int, newHeight: Int): Unit = {
-        width = if (newWidth >= 30) newWidth else 30
-        height = if (newHeight >= 30) newHeight else 30
+abstract class GuiElement(var posX: Int, var posY: Int, var width: Int, var height: Int, u: Int,
+                          texture: ResourceLocation, val screen: GUIAdvEnchantment) extends Gui {
+
+    private def setPosition(x: Int, y: Int) = {
+        posX = x
+        posY = y
     }
 
-    var dragging: Boolean = false
+    def handleMovementChange(dY: Int) = {
+        setPosition(posX, posY + dY)
+    }
+
+    def isVisible: Boolean
+
+    def isDragging: Boolean = dragging
+
+    def setDragging(b: Boolean) = dragging = b
+
+    def isUnderMouse(x: Int, y: Int): Boolean = {
+        if (posX <= x && x <= posX + width) {
+            if (posY <= y && y <= posY + height) {
+                return true
+            }
+        }
+        false
+    }
+
+    def mouseMoved(x: Int, y: Int)
+
+    private var dragging: Boolean = false
 
 
     def draw() {
