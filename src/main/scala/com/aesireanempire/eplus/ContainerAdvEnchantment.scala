@@ -2,7 +2,7 @@ package com.aesireanempire.eplus
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
 import com.aesireanempire.eplus.inventory.{SlotArmor, SlotEnchantment, TableInventory}
-import net.minecraft.enchantment.{Enchantment, EnchantmentHelper}
+import net.minecraft.enchantment.{EnchantmentData, Enchantment}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.{Container, IInventory, Slot}
 import net.minecraft.item.ItemStack
@@ -11,7 +11,8 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
 
     val tableInventory: IInventory = new TableInventory(this, "enchant", true, 1)
 
-    var enchantmentList: Array[Enchantment] = null
+    var dataSet = Array.empty[EnchantmentData]
+    var hasUpdated = false
 
     addSlotToContainer(new SlotEnchantment(this, tableInventory, 0, 37, 17))
     bindPlayerInventory()
@@ -39,8 +40,14 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
 
         val itemStack: ItemStack = par1IInventory.getStackInSlot(0)
 
-        if(itemStack != null) {
-            enchantmentList = AdvEnchantmentHelper.buildEnchantmentList(itemStack)
+        var newEnchantmentList = Array.empty[EnchantmentData]
+        if (itemStack != null) {
+            newEnchantmentList = AdvEnchantmentHelper.buildEnchantmentList(itemStack)
+        }
+
+        if (!dataSet.equals(newEnchantmentList)) {
+            dataSet = newEnchantmentList
+            hasUpdated = true
         }
     }
 }

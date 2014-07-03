@@ -28,6 +28,9 @@ abstract class GuiElement(val posX: Int, val posY: Int, var width: Int, var heig
 
     def drawExtras()
 
+    def update()
+
+
     private def drawTop() {
         drawTexturedModalRect(posX, posY, u, 0, if (width >= 15) 15 else width, 15)
         if (width > 30) {
