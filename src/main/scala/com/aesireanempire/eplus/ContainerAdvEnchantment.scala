@@ -29,7 +29,7 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
         }
 
         for (i <- 0 until 4) {
-            addSlotToContainer(new SlotArmor(i, player, 36 - i, 7, 24 + i * 19))
+            addSlotToContainer(new SlotArmor(i, player, 39 - i, 7, 24 + i * 19))
         }
     }
 
