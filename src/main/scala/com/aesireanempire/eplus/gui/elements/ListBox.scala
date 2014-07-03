@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation
 class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLocation,
               screen: GUIAdvEnchantment) extends GuiElement(posX, posY, width, height, 0, texture, screen) {
 
-    private var data = Array.empty[listItem]
+    var data = Array.empty[listItem]
     private var dataProvider: ContainerAdvEnchantment = null
 
     def setData(enchantments: Array[EnchantmentData]) = {
@@ -15,10 +15,11 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
         if (enchantments.isEmpty) {
             data = Array.empty[listItem]
         }
-
-        for (enchantment <- enchantments) {
-            data = new listItem(enchantment, posX, posY + 14 * enchantments.indexOf(enchantment), width, 14,
-                this) +: data
+        else {
+            for (enchantment <- enchantments) {
+                data = new listItem(enchantment, posX, posY + 14 * enchantments.indexOf(enchantment), width, 14,
+                    this) +: data
+            }
         }
     }
 
@@ -37,6 +38,7 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
     override def update() = {
         if (dataProvider != null && dataProvider.hasUpdated) {
             setData(dataProvider.dataSet)
+            dataProvider.hasUpdated = false
         }
     }
 

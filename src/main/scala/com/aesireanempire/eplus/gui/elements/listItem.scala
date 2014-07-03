@@ -8,7 +8,7 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
 
     def isVisible: Boolean = {
         if (box.posX <= posX && posX + width <= box.posX + box.width) {
-            if (box.posY <= posY && posY + height <= box.height + box.posY)
+            if (box.posY <= posY && posY + height < box.height + box.posY)
                 return true
         }
 

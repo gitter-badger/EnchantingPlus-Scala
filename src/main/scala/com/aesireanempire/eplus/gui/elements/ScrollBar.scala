@@ -7,10 +7,14 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
                 screen: GUIAdvEnchantment) extends GuiElement(posX,
     posY, width, height, 48, texture, screen) {
 
-    private var element: GuiElement = null
+    private var element: ListBox = null
 
-    def linkElement(element: GuiElement) = {
+    def linkElement(element: ListBox) = {
         this.element = element
+    }
+
+    def getNumberOfElementsLinked: Int = {
+        element.data.length
     }
 
     private var scrollPosition = 0
@@ -24,6 +28,13 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
 
     override def mouseMoved(x: Int, y: Int): Unit = {
         var newPosition = y - posY - 6
+
+        if(newPosition % 14 != 0)
+        {
+            val movement = newPosition %14
+            newPosition = newPosition - movement
+        }
+
         if (newPosition < 0) newPosition = 0
 
         if (newPosition + 12 >= height) newPosition = height - 12
