@@ -15,8 +15,8 @@ abstract class GuiElement(var posX: Int, var posY: Int, var width: Int, var heig
 
     private var dragging: Boolean = false
 
-    def handleMovementChange(dY: Int) = {
-        setPosition(posX, posY + dY)
+    def handleMovementChange(dY: Double) = {
+        setPosition(posX, posY + dY.toInt)
     }
 
     def setDragging(b: Boolean) = dragging = b

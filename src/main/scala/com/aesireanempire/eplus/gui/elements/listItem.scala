@@ -6,7 +6,7 @@ import net.minecraft.enchantment.{Enchantment, EnchantmentData}
 
 class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
                height: Int, box: ListBox) extends GuiElement(x, y, width, height, 0, null, box.screen) {
-    private var page: Int = 0
+    private var page: Double = 0
     private var y1: Int = posY
 
     def isVisible: Boolean = {
@@ -18,7 +18,7 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
         false
     }
 
-    override def handleMovementChange(dY: Int): Unit = {
+    override def handleMovementChange(dY: Double): Unit = {
         page = dY
 
         if(dY <= 0) page = 0
@@ -39,7 +39,7 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
     }
 
     override def update() {
-        y1 = posY - (14 * page * 5)
+        y1 = posY - (14 * (page * 5).toInt)
     }
 
     private def getTranslatedName(enchantment: Enchantment, level: Int): String = {

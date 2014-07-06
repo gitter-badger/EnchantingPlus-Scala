@@ -25,7 +25,7 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
         }
     }
 
-    def setPage(page: Int) = {
+    def setPage(page: Double) = {
         handleMovementChange(page)
     }
 
@@ -70,7 +70,7 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
         }
     }
 
-    override def handleMovementChange(dY: Int) = {
+    override def handleMovementChange(dY: Double) = {
         for (list <- data) {
             list.handleMovementChange(dY)
         }

@@ -46,33 +46,41 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
         move(newPosition)
     }
 
-    def move(position: Int) {
+    def move(position: Int, interval: Double = movementInterval) {
         var newPosition = position
 
-        if (movementInterval == 0) {
+        if (interval == 0) {
             return
         }
 
-        if (position % movementInterval != 0) {
-            val movement = position % movementInterval
-            newPosition = position - movement
+        if (position % interval != 0) {
+            val movement = position % interval
+            newPosition = position - movement.toInt
         }
 
         if (newPosition < 0) newPosition = 0
 
         if (newPosition + 16 >= height) newPosition = height - 16
 
-        element.setPage(newPosition / movementInterval)
+        if(interval != movementInterval ) {
+            element.setPage(newPosition / (interval * 5))
+        } else {
+            element.setPage(newPosition / interval)
+        }
 
         scrollPosition = newPosition
     }
 
     override def isVisible: Boolean = true
 
-    override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int) = {
+    override def handleMouseInput(mouseEvent: Int, mouseX: Int, mouseY: Int) = {
         if (mouseEvent != 0) {
             val sign = if (mouseEvent < 0) 1 else -1
             move(scrollPosition + sign * movementInterval)
+        } else {
+            if (isDragging) {
+                move(mouseY - posY - 6, movementInterval)
+            }
         }
     }
 }

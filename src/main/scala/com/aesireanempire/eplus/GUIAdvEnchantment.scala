@@ -74,7 +74,9 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         if (guiElements.nonEmpty) {
             val element = guiElements(0)
 
-            element.mouseMoved(x, y)
+            if(!element.isInstanceOf[ScrollBar]) {
+                element.mouseMoved(x, y)
+            }
 
             if (event != -1) {
                 element.setDragging(b = false)
