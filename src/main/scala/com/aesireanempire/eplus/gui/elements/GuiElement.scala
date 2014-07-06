@@ -9,20 +9,18 @@ import org.lwjgl.opengl.GL11
 abstract class GuiElement(var posX: Int, var posY: Int, var width: Int, var height: Int, u: Int,
                           texture: ResourceLocation, val screen: GUIAdvEnchantment) extends Gui {
 
-    private def setPosition(x: Int, y: Int) = {
-        posX = x
-        posY = y
-    }
+    def isVisible: Boolean
+
+    def isDragging: Boolean = dragging
+
+    private var dragging: Boolean = false
 
     def handleMovementChange(dY: Int) = {
         setPosition(posX, posY + dY)
     }
 
-    def isVisible: Boolean
-
-    def isDragging: Boolean = dragging
-
     def setDragging(b: Boolean) = dragging = b
+
 
     def isUnderMouse(x: Int, y: Int): Boolean = {
         if (posX <= x && x <= posX + width) {
@@ -32,11 +30,6 @@ abstract class GuiElement(var posX: Int, var posY: Int, var width: Int, var heig
         }
         false
     }
-
-    def mouseMoved(x: Int, y: Int)
-
-    private var dragging: Boolean = false
-
 
     def draw() {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
@@ -49,10 +42,18 @@ abstract class GuiElement(var posX: Int, var posY: Int, var width: Int, var heig
         drawExtras()
     }
 
+    def mouseMoved(x: Int, y: Int)
+
     def drawExtras()
 
     def update()
 
+    def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int)
+
+    private def setPosition(x: Int, y: Int) = {
+        posX = x
+        posY = y
+    }
 
     private def drawTop() {
         drawTexturedModalRect(posX, posY, u, 0, if (width >= 15) 15 else width, 15)

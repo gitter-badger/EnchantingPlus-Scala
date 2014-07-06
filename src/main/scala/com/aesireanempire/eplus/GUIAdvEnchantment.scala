@@ -6,6 +6,7 @@ import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation
+import org.lwjgl.input.Mouse
 import org.lwjgl.opengl.GL11
 
 
@@ -34,6 +35,22 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
 
         elements = scrollBar :: listBox :: List.empty
 
+    }
+
+
+    override def handleMouseInput(): Unit = {
+        super.handleMouseInput()
+
+        val eventDWheel = Mouse.getEventDWheel
+        val mouseX = Mouse.getEventX * width / mc.displayWidth
+        val mouseY = height - Mouse.getEventY * height / mc.displayHeight - 1
+
+        val element = getElementUnderMouse(mouseX, mouseY)
+
+        if(element != null)
+        {
+            element.handleMouseInput(eventDWheel, mouseX, mouseY)
+        }
     }
 
     override def drawGuiContainerBackgroundLayer(f: Float, x: Int, y: Int): Unit = {
@@ -71,7 +88,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         val guiElements: List[GuiElement] = elements.filter(e => e.isDragging)
         if (guiElements.isEmpty) {
 
-            val elementClicked = getElementUnderClick(x, y)
+            val elementClicked = getElementUnderMouse(x, y)
 
             if (elementClicked != null) {
                 elementClicked.setDragging(b = true)
@@ -87,7 +104,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         inventorySlots.asInstanceOf[ContainerAdvEnchantment]
     }
 
-    private def getElementUnderClick(x: Int, y: Int): GuiElement = {
+    private def getElementUnderMouse(x: Int, y: Int): GuiElement = {
         for (element <- elements) {
             if (element.isUnderMouse(x, y)) {
                 return element

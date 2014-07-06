@@ -27,12 +27,15 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
     override def update() = {}
 
     override def mouseMoved(x: Int, y: Int): Unit = {
-        var newPosition = y - posY - 6
+        val newPosition = y - posY - 6
+        move(newPosition)
+    }
 
-        if(newPosition % 14 != 0)
-        {
-            val movement = newPosition %14
-            newPosition = newPosition - movement
+    def move(position: Int) {
+        var newPosition = position
+        if (position % 14 != 0) {
+            val movement = position % 14
+            newPosition = position - movement
         }
 
         if (newPosition < 0) newPosition = 0
@@ -45,4 +48,12 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
     }
 
     override def isVisible: Boolean = true
+
+    override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int) = {
+        if(mouseEvent != 0)
+        {
+            val sign = if (mouseEvent < 0) 1 else -1
+            move(scrollPosition + sign * 14)
+        }
+    }
 }

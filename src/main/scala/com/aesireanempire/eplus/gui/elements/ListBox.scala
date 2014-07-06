@@ -66,5 +66,13 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
     }
 
     override def isVisible: Boolean = true
+
+    override def handleMouseInput(mouseEvent: Int, mouseX: Int, mouseY: Int) = {
+        val item = getListItem(mouseX, mouseY)
+
+        if (item != null) {
+            item.handleMouseInput(mouseEvent, mouseX, mouseY)
+        }
+    }
 }
 

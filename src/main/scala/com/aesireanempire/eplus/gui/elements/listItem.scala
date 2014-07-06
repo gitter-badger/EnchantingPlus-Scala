@@ -44,5 +44,7 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
     }
 
     override def mouseMoved(x: Int, y: Int): Unit = {}
+
+    override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int): Unit = {}
 }
 
