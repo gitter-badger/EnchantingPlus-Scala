@@ -40,7 +40,7 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
 
         if (newPosition < 0) newPosition = 0
 
-        if (newPosition + 12 >= height) newPosition = height - 12
+        if (newPosition + 16 >= height) newPosition = height - 16
 
         element.handleMovementChange(newPosition - scrollPosition)
 
