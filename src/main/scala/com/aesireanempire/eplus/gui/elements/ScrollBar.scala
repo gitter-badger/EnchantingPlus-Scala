@@ -8,6 +8,9 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
     posY, width, height, 48, texture, screen) {
 
     private var element: ListBox = null
+    private var pages: Int = 0
+
+    private var movementInterval: Int = 0
 
     def linkElement(element: ListBox) = {
         this.element = element
@@ -24,7 +27,19 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
         drawTexturedModalRect(posX, posY + scrollPosition, 0, 182, 12, 15)
     }
 
-    override def update() = {}
+    override def update() = {
+        pages = Math.floor(element.getNumberOfItems / 10D).toInt
+
+        if (pages != 0) {
+            movementInterval = Math.ceil((height - 16) / pages.toDouble).toInt
+        } else {
+            movementInterval = 0
+        }
+
+        if (pages == 0) {
+            scrollPosition = 0
+        }
+    }
 
     override def mouseMoved(x: Int, y: Int): Unit = {
         val newPosition = y - posY - 6
@@ -33,8 +48,13 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
 
     def move(position: Int) {
         var newPosition = position
-        if (position % 14 != 0) {
-            val movement = position % 14
+
+        if (movementInterval == 0) {
+            return
+        }
+
+        if (position % movementInterval != 0) {
+            val movement = position % movementInterval
             newPosition = position - movement
         }
 
@@ -42,7 +62,7 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
 
         if (newPosition + 16 >= height) newPosition = height - 16
 
-        element.handleMovementChange(newPosition - scrollPosition)
+        element.setPage(newPosition / movementInterval)
 
         scrollPosition = newPosition
     }
@@ -50,10 +70,9 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
     override def isVisible: Boolean = true
 
     override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int) = {
-        if(mouseEvent != 0)
-        {
+        if (mouseEvent != 0) {
             val sign = if (mouseEvent < 0) 1 else -1
-            move(scrollPosition + sign * 14)
+            move(scrollPosition + sign * movementInterval)
         }
     }
 }

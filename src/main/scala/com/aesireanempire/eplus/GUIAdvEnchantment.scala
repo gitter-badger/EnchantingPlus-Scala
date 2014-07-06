@@ -33,7 +33,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
 
         listBox.setDataProvider(getContainer)
 
-        elements = scrollBar :: listBox :: List.empty
+        elements = listBox :: scrollBar :: List.empty
 
     }
 

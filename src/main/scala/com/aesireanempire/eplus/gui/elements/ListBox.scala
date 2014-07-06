@@ -6,9 +6,11 @@ import net.minecraft.util.ResourceLocation
 
 class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLocation,
               screen: GUIAdvEnchantment) extends GuiElement(posX, posY, width, height, 0, texture, screen) {
-
     var data = Array.empty[listItem]
     private var dataProvider: ContainerAdvEnchantment = null
+    private var page: Int = 0
+
+    def getNumberOfItems = data.length
 
     def setData(enchantments: Array[EnchantmentData]) = {
 
@@ -23,13 +25,17 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
         }
     }
 
+    def setPage(page: Int) = {
+        handleMovementChange(page)
+    }
+
     def setDataProvider(container: ContainerAdvEnchantment) = {
         dataProvider = container
     }
 
     override def drawExtras() = {
         for (item <- data) {
-            if (item.isVisible) {
+            if(item.isVisible) {
                 item.draw()
             }
         }
@@ -39,6 +45,11 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
         if (dataProvider != null && dataProvider.hasUpdated) {
             setData(dataProvider.dataSet)
             dataProvider.hasUpdated = false
+        }
+
+        for (item <- data) {
+            item.update()
+
         }
     }
 
@@ -61,7 +72,7 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
 
     override def handleMovementChange(dY: Int) = {
         for (list <- data) {
-            list.handleMovementChange(-dY)
+            list.handleMovementChange(dY)
         }
     }
 
