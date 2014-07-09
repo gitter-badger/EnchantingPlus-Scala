@@ -1,10 +1,10 @@
 
 package com.aesireanempire.eplus.gui.elements
 
-import net.minecraft.client.gui.Gui
+import net.minecraft.client.gui.{GuiButton, Gui}
 import net.minecraft.enchantment.{Enchantment, EnchantmentData}
 
-class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
+class listItem(val enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
                height: Int, box: ListBox) extends GuiElement(x, y, width, height, 0, null, box.screen) {
 
     private var active: Boolean = true
@@ -101,5 +101,7 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
           }
       }
   }
+
+    override def actionPerformed(button: GuiButton): Unit = {}
 }
 

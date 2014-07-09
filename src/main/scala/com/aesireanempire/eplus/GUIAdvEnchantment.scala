@@ -2,13 +2,13 @@ package com.aesireanempire.eplus
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
 import com.aesireanempire.eplus.gui.elements.{GuiElement, ListBox, ScrollBar}
-import net.minecraft.client.gui.Gui
+import net.minecraft.client.gui.{GuiButton, Gui}
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.input.Mouse
 import org.lwjgl.opengl.GL11
-
+import scala.collection.JavaConverters._
 
 class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTable) extends GuiContainer(new
         ContainerAdvEnchantment(player, tile)) {
@@ -35,8 +35,18 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
 
         elements = listBox :: scrollBar :: List.empty
 
+        val enchantButton = new GuiButton(0, guiLeft + 35, guiTop + 40, 20, 20, "E")
+
+        buttonList.asInstanceOf[java.util.List[GuiButton]].add(enchantButton)
     }
 
+
+    override def actionPerformed(button : GuiButton): Unit = {
+        if(button.displayString.equals("E")) {
+            elements.head.actionPerformed(button)
+        }
+        
+    }
 
     override def handleMouseInput(): Unit = {
         super.handleMouseInput()
@@ -47,8 +57,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
 
         val element = getElementUnderMouse(mouseX, mouseY)
 
-        if(element != null)
-        {
+        if (element != null) {
             element.handleMouseInput(eventDWheel, mouseX, mouseY)
         }
     }
@@ -75,12 +84,12 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         if (guiElements.nonEmpty) {
             val element = guiElements(0)
 
-            if(!element.isInstanceOf[ScrollBar]) {
+            if (!element.isInstanceOf[ScrollBar]) {
                 element.mouseMoved(x, y)
             }
 
             if (event != -1) {
-                element.setDragging(x,y, b = false)
+                element.setDragging(x, y, b = false)
             }
         }
     }
@@ -94,7 +103,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
             val elementClicked = getElementUnderMouse(x, y)
 
             if (elementClicked != null) {
-                elementClicked.setDragging(x,y,b = true)
+                elementClicked.setDragging(x, y, b = true)
             }
         }
     }

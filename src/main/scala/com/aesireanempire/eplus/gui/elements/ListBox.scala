@@ -1,6 +1,10 @@
 package com.aesireanempire.eplus.gui.elements
 
-import com.aesireanempire.eplus.{ContainerAdvEnchantment, GUIAdvEnchantment}
+import com.aesireanempire.eplus.network.EnchantPacket
+import com.aesireanempire.eplus.{EnchantingPlus, ContainerAdvEnchantment, GUIAdvEnchantment}
+import cpw.mods.fml.client.FMLClientHandler
+import cpw.mods.fml.common.FMLCommonHandler
+import net.minecraft.client.gui.GuiButton
 import net.minecraft.enchantment.EnchantmentData
 import net.minecraft.util.ResourceLocation
 
@@ -102,6 +106,14 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
         if (item != null) {
             item.handleMouseInput(mouseEvent, mouseX, mouseY)
         }
+    }
+
+    //correct space for this!?
+    override def actionPerformed(button: GuiButton): Unit = {
+        val list = data.filter(e => e.getLevel != e.enchantmentData.enchantmentLevel).flatMap(e => Map(e.enchantmentData.enchantmentobj -> e.getLevel)).toMap
+        val player = FMLClientHandler.instance().getClient.thePlayer
+        
+        EnchantingPlus.sendToServer(new EnchantPacket(list, player))
     }
 }
 

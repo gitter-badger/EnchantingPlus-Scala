@@ -2,12 +2,13 @@ package com.aesireanempire.eplus.gui.elements
 
 import com.aesireanempire.eplus.GUIAdvEnchantment
 import cpw.mods.fml.client.FMLClientHandler
-import net.minecraft.client.gui.Gui
+import net.minecraft.client.gui.{GuiButton, Gui}
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
 
 abstract class GuiElement(var posX: Int, var posY: Int, var width: Int, var height: Int, u: Int,
                           texture: ResourceLocation, val screen: GUIAdvEnchantment) extends Gui {
+    def actionPerformed(button: GuiButton)
 
     def isVisible: Boolean
 

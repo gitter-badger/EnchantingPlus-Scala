@@ -1,6 +1,7 @@
 package com.aesireanempire.eplus.gui.elements
 
 import com.aesireanempire.eplus.GUIAdvEnchantment
+import net.minecraft.client.gui.GuiButton
 import net.minecraft.util.ResourceLocation
 
 class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLocation,
@@ -79,4 +80,6 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
             }
         }
     }
+
+    override def actionPerformed(button: GuiButton): Unit = {}
 }

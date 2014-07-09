@@ -1,16 +1,24 @@
 package com.aesireanempire.eplus
 
+import java.util
+
 import com.aesireanempire.eplus.blocks.EplusBlocks
 import com.aesireanempire.eplus.handlers.{ConfigHandler, GUIHandler}
 import com.aesireanempire.eplus.items.EplusItems
+import com.aesireanempire.eplus.network.{EplusChannelHandler, EplusPacket, PacketHandler}
 import cpw.mods.fml.common.Mod
 import cpw.mods.fml.common.event._
-import cpw.mods.fml.common.network.NetworkRegistry
+import cpw.mods.fml.common.network.{FMLOutboundHandler, FMLEmbeddedChannel, NetworkRegistry}
+import cpw.mods.fml.relauncher.Side
+
+import scala.collection.JavaConverters._
 
 @Mod(name = EnchantingPlus.MODNAME, modid = EnchantingPlus.MODID, modLanguage = "scala")
 object EnchantingPlus {
     final val MODNAME = "Enchanting Plus"
     final val MODID = "eplus"
+
+    var channels = collection.mutable.Map.empty[Side, FMLEmbeddedChannel]
 
     @Mod.EventHandler
     def preInit(event: FMLPreInitializationEvent) {
@@ -22,6 +30,8 @@ object EnchantingPlus {
 
     @Mod.EventHandler
     def init(event: FMLInitializationEvent) {
+        channels = NetworkRegistry.INSTANCE.newChannel("eplus", new EplusChannelHandler, new PacketHandler).asScala
+
         //Register WorldGen
         //Register Recipes
 
@@ -35,5 +45,10 @@ object EnchantingPlus {
     @Mod.EventHandler
     def postInit(event: FMLPostInitializationEvent) {
 
+    }
+
+    def sendToServer(packet: EplusPacket)= {
+        channels.get(Side.CLIENT).get.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER)
+        channels.get(Side.CLIENT).get.writeAndFlush(packet)
     }
 }

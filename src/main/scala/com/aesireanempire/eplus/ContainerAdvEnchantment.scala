@@ -2,10 +2,12 @@ package com.aesireanempire.eplus
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
 import com.aesireanempire.eplus.inventory.{SlotArmor, SlotEnchantment, TableInventory}
-import net.minecraft.enchantment.{EnchantmentData, Enchantment}
+import net.minecraft.enchantment.{EnchantmentHelper, EnchantmentData, Enchantment}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.{Container, IInventory, Slot}
 import net.minecraft.item.ItemStack
+import scala.collection.JavaConversions._
+
 
 class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTable) extends Container {
 
@@ -49,5 +51,14 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
             dataSet = newEnchantmentList
             hasUpdated = true
         }
+    }
+
+    def enchantItem(player : EntityPlayer, enchants: collection.mutable.Map[Int, Int], cost : Int): Boolean = {
+        val itemStack = tableInventory.getStackInSlot(0)
+
+        if(itemStack == null) return false
+
+        EnchantmentHelper.setEnchantments(enchants, itemStack)
+        true
     }
 }
