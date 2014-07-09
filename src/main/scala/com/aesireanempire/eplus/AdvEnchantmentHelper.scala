@@ -1,5 +1,7 @@
 package com.aesireanempire.eplus
 
+import java.util
+
 import net.minecraft.enchantment.{Enchantment, EnchantmentData, EnchantmentHelper}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
@@ -8,19 +10,21 @@ import scala.collection.JavaConversions._
 
 object AdvEnchantmentHelper {
     def buildEnchantmentList(itemStack: ItemStack): Array[EnchantmentData] = {
-        val enchantmentsOnItem = EnchantmentHelper.getEnchantments(itemStack).keySet().toList
+        val enchantmentsOnItem = getEnchantmentsOn(itemStack)
 
-        val possibleEnchantments: Array[Enchantment] = Enchantment.enchantmentsList.filter {
+        var possibleEnchantments: Array[Enchantment] = Enchantment.enchantmentsList.filter {
             e => e != null && (e.canApplyAtEnchantingTable(itemStack) || (isBook(itemStack) && e.isAllowedOnBooks))
         }
 
-        for (id <- enchantmentsOnItem) {
-            val enchantment: Enchantment = Enchantment.enchantmentsList(id.asInstanceOf[Int])
-
-            possibleEnchantments.filter(e => e.canApplyTogether(enchantment))
+        for (enchantment <- enchantmentsOnItem) {
+            possibleEnchantments = possibleEnchantments.filter(e => e.canApplyTogether(enchantment.enchantmentobj))
         }
 
-        possibleEnchantments.map(e => new EnchantmentData(e, 0))
+        enchantmentsOnItem ++: possibleEnchantments.map(e => new EnchantmentData(e, 0))
+    }
+
+    def getEnchantmentsOn(itemStack: ItemStack): Array[EnchantmentData] = {
+        EnchantmentHelper.getEnchantments(itemStack).asInstanceOf[util.Map[Int, Int]].map(e => new EnchantmentData(Enchantment.enchantmentsList(e._1), e._2)).toArray
     }
 
     def isBook(itemStack: ItemStack): Boolean = {

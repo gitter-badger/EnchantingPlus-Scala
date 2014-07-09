@@ -34,5 +34,6 @@ class EnchantPacket(enchantments: Map[Enchantment, Int]) extends EplusPacket {
 
     override def execute(player: EntityPlayer): Unit = {
         player.openContainer.asInstanceOf[ContainerAdvEnchantment].enchantItem(player, m_enchantments, 0)
+        player.openContainer.detectAndSendChanges()
     }
 }

@@ -31,11 +31,10 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
             data = Array.empty[listItem]
         }
         else {
-            if (data.isEmpty) {
-                for (enchantment <- enchantments) {
-                    data = new listItem(enchantment, posX, posY + 14 * enchantments.indexOf(enchantment), width, 14,
-                        this) +: data
-                }
+            data = Array.empty[listItem]
+            for (enchantment <- enchantments) {
+                data = new listItem(enchantment, posX, posY + 14 * enchantments.indexOf(enchantment), width, 14,
+                    this) +: data
             }
         }
     }
@@ -110,7 +109,7 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
 
     //correct space for this!?
     override def actionPerformed(button: GuiButton): Unit = {
-        val list = data.filter(e => e.getLevel != e.enchantmentData.enchantmentLevel).flatMap(e => Map(e.enchantmentData.enchantmentobj -> e.getLevel)).toMap
+        val list = data.filter(e => e.getLevel != 0).flatMap(e => Map(e.enchantmentData.enchantmentobj -> e.getLevel)).toMap
 
         EnchantingPlus.sendToServer(new EnchantPacket(list))
     }
