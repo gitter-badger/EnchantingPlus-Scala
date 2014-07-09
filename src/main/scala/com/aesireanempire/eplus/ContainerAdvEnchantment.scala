@@ -61,4 +61,8 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
         EnchantmentHelper.setEnchantments(enchants, itemStack)
         true
     }
+
+    override def transferStackInSlot(player : EntityPlayer, slot : Int): ItemStack = {
+        null
+    }
 }
