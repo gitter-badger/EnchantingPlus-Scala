@@ -71,6 +71,15 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
     if(level >= maxLevel ) level = maxLevel
   }
 
+  override def isUnderMouse(x: Int, y: Int): Boolean = {
+    if (posX <= x && x <= posX + width) {
+      if (y1 <= y && y <= y1 + height) {
+        return true
+      }
+    }
+    false
+  }
+
   override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int): Unit = {
       if (mouseEvent != 0) {
         val sign = if (mouseEvent > 0) 1 else -1

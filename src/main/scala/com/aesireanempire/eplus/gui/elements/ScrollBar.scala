@@ -28,7 +28,7 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
     }
 
     override def update() = {
-        pages = Math.floor(element.getNumberOfItems / 10D).toInt
+        pages = Math.floor(element.getNumberOfItems / 5D).toInt
 
         if (pages != 0) {
             movementInterval = Math.ceil((height - 16) / pages.toDouble).toInt
