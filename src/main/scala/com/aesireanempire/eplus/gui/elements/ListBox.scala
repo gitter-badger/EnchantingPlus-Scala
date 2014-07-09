@@ -111,9 +111,8 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
     //correct space for this!?
     override def actionPerformed(button: GuiButton): Unit = {
         val list = data.filter(e => e.getLevel != e.enchantmentData.enchantmentLevel).flatMap(e => Map(e.enchantmentData.enchantmentobj -> e.getLevel)).toMap
-        val player = FMLClientHandler.instance().getClient.thePlayer
-        
-        EnchantingPlus.sendToServer(new EnchantPacket(list, player))
+
+        EnchantingPlus.sendToServer(new EnchantPacket(list))
     }
 }
 

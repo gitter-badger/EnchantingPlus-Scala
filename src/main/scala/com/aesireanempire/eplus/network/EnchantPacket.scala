@@ -5,11 +5,11 @@ import io.netty.buffer.ByteBuf
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.player.EntityPlayer
 
-class EnchantPacket(enchantments: Map[Enchantment, Int], player: EntityPlayer) extends EplusPacket {
+class EnchantPacket(enchantments: Map[Enchantment, Int]) extends EplusPacket {
 
     var m_enchantments = collection.mutable.Map.empty[Int, Int]
 
-    def this() = this(Map.empty[Enchantment, Int], null.asInstanceOf[EntityPlayer])
+    def this() = this(Map.empty[Enchantment, Int])
 
     override def readData(buf: ByteBuf): Unit = {
         val length = buf.readInt()
@@ -21,8 +21,6 @@ class EnchantPacket(enchantments: Map[Enchantment, Int], player: EntityPlayer) e
             m_enchantments = m_enchantments.++=(Map(enchantment -> level))
         }
     }
-
-
 
     override def writeData(buf: ByteBuf): Unit = {
         val length = enchantments.size
