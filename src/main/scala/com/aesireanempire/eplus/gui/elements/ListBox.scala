@@ -8,7 +8,6 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
               screen: GUIAdvEnchantment) extends GuiElement(posX, posY, width, height, 0, texture, screen) {
     var data = Array.empty[listItem]
     private var dataProvider: ContainerAdvEnchantment = null
-    private var page: Int = 0
 
     def getNumberOfItems = data.length
 
@@ -34,11 +33,7 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
     }
 
     override def drawExtras() = {
-        for (item <- data) {
-            if(item.isVisible) {
-                item.draw()
-            }
-        }
+        data.filter(_.isVisible).foreach(_.draw())
     }
 
     override def update() = {
@@ -47,10 +42,7 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
             dataProvider.hasUpdated = false
         }
 
-        for (item <- data) {
-            item.update()
-
-        }
+        data.foreach(_.update())
     }
 
     private def getListItem(x: Int, y: Int): listItem = {
@@ -71,9 +63,7 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
     }
 
     override def handleMovementChange(dY: Double) = {
-        for (list <- data) {
-            list.handleMovementChange(dY)
-        }
+        data.foreach(_.handleMovementChange(dY))
     }
 
     override def isVisible: Boolean = true

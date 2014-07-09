@@ -59,8 +59,8 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         elements.foreach { e => e.update(); e.draw()}
 
         if (debug) {
-            for (element <- elements) {
-                Gui.drawRect(element.posX, element.posY, element.posX + element.width, element.posY + element.height,
+            elements.foreach { e =>
+                Gui.drawRect(e.posX, e.posY, e.posX + e.width, e.posY + e.height,
                     0x8800aa00)
             }
         }
