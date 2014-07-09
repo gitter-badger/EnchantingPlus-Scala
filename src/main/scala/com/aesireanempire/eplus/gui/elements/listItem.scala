@@ -34,6 +34,12 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
 
         box.screen.drawString(getTranslatedName(enchantmentData.enchantmentobj, level),
             posX + 5, 4 + y1, 0xffffffff)
+
+        val selectorOffset = ((level / enchantmentData.enchantmentobj.getMaxLevel.toDouble) * (width - 6)).toInt
+
+        Gui.drawRect(posX + 1 + selectorOffset, y1 + 1, posX + selectorOffset + 5, y1 + 14,
+          0xff444444)
+
     }
 
     override def drawExtras() {
@@ -67,11 +73,12 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
 
   override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int): Unit = {
       if (mouseEvent != 0) {
-        val sign = if (mouseEvent < 0) 1 else -1
+        val sign = if (mouseEvent > 0) 1 else -1
         changeLevel(level + sign)
       } else {
         if (isDragging) {
-          
+          val level = (((mouseX - posX + 6) / width.toDouble) * enchantmentData.enchantmentobj.getMaxLevel).toInt
+          changeLevel(level)
         }
       }
     }

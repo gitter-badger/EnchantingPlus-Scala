@@ -79,7 +79,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
             }
 
             if (event != -1) {
-                element.setDragging(b = false)
+                element.setDragging(x,y, b = false)
             }
         }
     }
@@ -93,7 +93,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
             val elementClicked = getElementUnderMouse(x, y)
 
             if (elementClicked != null) {
-                elementClicked.setDragging(b = true)
+                elementClicked.setDragging(x,y,b = true)
             }
         }
     }

@@ -19,7 +19,7 @@ abstract class GuiElement(var posX: Int, var posY: Int, var width: Int, var heig
         setPosition(posX, posY + dY.toInt)
     }
 
-    def setDragging(b: Boolean) = dragging = b
+    def setDragging(mouseX:Int, mouseY: Int, b: Boolean) = dragging = b
 
 
     def isUnderMouse(x: Int, y: Int): Boolean = {

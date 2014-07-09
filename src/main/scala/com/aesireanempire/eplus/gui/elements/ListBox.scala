@@ -11,7 +11,18 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
 
     def getNumberOfItems = data.length
 
-    def setData(enchantments: Array[EnchantmentData]) = {
+
+  override def isDragging: Boolean = data.filter(_.isDragging).length > 0
+
+  override def setDragging(mouseX: Int, mouseY: Int, b: Boolean): Unit =
+  {
+    val item = getListItem(mouseX,mouseY)
+
+    if(item != null)
+      item.setDragging(mouseX, mouseY, b)
+  }
+
+  def setData(enchantments: Array[EnchantmentData]) = {
 
         if (enchantments.isEmpty) {
             data = Array.empty[listItem]
