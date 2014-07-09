@@ -12,28 +12,27 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
     def getNumberOfItems = data.length
 
 
-  override def isDragging: Boolean = data.filter(_.isDragging).length > 0
+    override def isDragging: Boolean = data.filter(_.isDragging).length > 0
 
-  override def setDragging(mouseX: Int, mouseY: Int, b: Boolean): Unit =
-  {
-    val item = getListItem(mouseX,mouseY)
+    override def setDragging(mouseX: Int, mouseY: Int, b: Boolean): Unit = {
+        val item = getListItem(mouseX, mouseY)
 
-    if(item != null)
-      item.setDragging(mouseX, mouseY, b)
-  }
+        if (item != null)
+            item.setDragging(mouseX, mouseY, b)
+    }
 
-  def setData(enchantments: Array[EnchantmentData]) = {
+    def setData(enchantments: Array[EnchantmentData]) = {
 
         if (enchantments.isEmpty) {
             data = Array.empty[listItem]
         }
         else {
-          if(data.isEmpty) {
-            for (enchantment <- enchantments) {
-              data = new listItem(enchantment, posX, posY + 14 * enchantments.indexOf(enchantment), width, 14,
-                this) +: data
+            if (data.isEmpty) {
+                for (enchantment <- enchantments) {
+                    data = new listItem(enchantment, posX, posY + 14 * enchantments.indexOf(enchantment), width, 14,
+                        this) +: data
+                }
             }
-          }
         }
     }
 
@@ -53,6 +52,22 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
         if (dataProvider != null && dataProvider.hasUpdated) {
             setData(dataProvider.dataSet)
             dataProvider.hasUpdated = false
+        }
+
+        val newEnchants = data.filter(_.getLevel > 0)
+
+        if(newEnchants.isEmpty) data.foreach(_.setActive())
+
+        for (newEnchant <- newEnchants;
+             enchantment <- data
+        ) {
+            if(enchantment.getEnchantment.canApplyTogether(newEnchant.getEnchantment)){
+                enchantment.setActive()
+            } else {
+                if(!newEnchants.contains(enchantment)){
+                    enchantment.setDeactive()
+                }
+            }
         }
 
         data.foreach(_.update())

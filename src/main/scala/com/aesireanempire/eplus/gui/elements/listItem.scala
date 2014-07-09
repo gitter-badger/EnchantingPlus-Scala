@@ -6,10 +6,16 @@ import net.minecraft.enchantment.{Enchantment, EnchantmentData}
 
 class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
                height: Int, box: ListBox) extends GuiElement(x, y, width, height, 0, null, box.screen) {
+
+    private var active: Boolean = true
     private var page: Double = 0
     private var y1: Int = posY
 
     private var level: Int = enchantmentData.enchantmentLevel
+
+    def setActive() = active = true
+    def setDeactive() = active = false
+    def getEnchantment = enchantmentData.enchantmentobj
 
     def isVisible: Boolean = {
         if (box.posX <= posX && posX + width <= box.posX + box.width) {
@@ -26,11 +32,13 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
         if(dY <= 0) page = 0
     }
 
+  def getLevel: Int = level
+
   override def draw() {
         Gui.drawRect(posX + 1, y1 + 1, posX + width - 1, y1 + 14,
             0xff444444)
         Gui.drawRect(posX + 3, y1 + 3, posX + width - 3, y1 + 12,
-            0xffaaaaaa)
+            if(active) 0xffaaaaaa else 0xff00aa00)
 
         box.screen.drawString(getTranslatedName(enchantmentData.enchantmentobj, level),
             posX + 5, 4 + y1, 0xffffffff)
@@ -81,15 +89,17 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
   }
 
   override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int): Unit = {
-      if (mouseEvent != 0) {
-        val sign = if (mouseEvent > 0) 1 else -1
-        changeLevel(level + sign)
-      } else {
-        if (isDragging) {
-          val level = (((mouseX - posX + 6) / width.toDouble) * enchantmentData.enchantmentobj.getMaxLevel).toInt
-          changeLevel(level)
-        }
+      if (active) {
+          if (mouseEvent != 0) {
+              val sign = if (mouseEvent > 0) 1 else -1
+              changeLevel(level + sign)
+          } else {
+              if (isDragging) {
+                  val level = (((mouseX - posX + 6) / width.toDouble) * enchantmentData.enchantmentobj.getMaxLevel).toInt
+                  changeLevel(level)
+              }
+          }
       }
-    }
+  }
 }
 
