@@ -9,6 +9,8 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
     private var page: Double = 0
     private var y1: Int = posY
 
+    private var level: Int = enchantmentData.enchantmentLevel
+
     def isVisible: Boolean = {
         if (box.posX <= posX && posX + width <= box.posX + box.width) {
             if (box.posY <= y1 && y1 + height < box.height + box.posY)
@@ -24,13 +26,13 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
         if(dY <= 0) page = 0
     }
 
-    override def draw() {
+  override def draw() {
         Gui.drawRect(posX + 1, y1 + 1, posX + width - 1, y1 + 14,
             0xff444444)
         Gui.drawRect(posX + 3, y1 + 3, posX + width - 3, y1 + 12,
             0xffaaaaaa)
 
-        box.screen.drawString(getTranslatedName(enchantmentData.enchantmentobj, enchantmentData.enchantmentLevel),
+        box.screen.drawString(getTranslatedName(enchantmentData.enchantmentobj, level),
             posX + 5, 4 + y1, 0xffffffff)
     }
 
@@ -54,6 +56,24 @@ class listItem(enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
 
     override def mouseMoved(x: Int, y: Int): Unit = {}
 
-    override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int): Unit = {}
+  def changeLevel(dLevel: Int): Unit = {
+    level = dLevel
+
+    if(level <= 0) level = 0
+
+    val maxLevel = enchantmentData.enchantmentobj.getMaxLevel
+    if(level >= maxLevel ) level = maxLevel
+  }
+
+  override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int): Unit = {
+      if (mouseEvent != 0) {
+        val sign = if (mouseEvent < 0) 1 else -1
+        changeLevel(level + sign)
+      } else {
+        if (isDragging) {
+          
+        }
+      }
+    }
 }
 

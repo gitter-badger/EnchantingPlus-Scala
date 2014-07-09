@@ -17,10 +17,12 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
             data = Array.empty[listItem]
         }
         else {
+          if(data.isEmpty) {
             for (enchantment <- enchantments) {
-                data = new listItem(enchantment, posX, posY + 14 * enchantments.indexOf(enchantment), width, 14,
-                    this) +: data
+              data = new listItem(enchantment, posX, posY + 14 * enchantments.indexOf(enchantment), width, 14,
+                this) +: data
             }
+          }
         }
     }
 
