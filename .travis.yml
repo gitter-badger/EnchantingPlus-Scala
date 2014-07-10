@@ -1,0 +1,6 @@
+language: scala
+jdk:
+  - openjdk7
+
+install: ./gradlew setupCIWorkspace -S
+script: ./gradlew build -S
