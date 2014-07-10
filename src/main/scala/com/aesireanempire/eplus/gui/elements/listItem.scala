@@ -13,8 +13,8 @@ class listItem(val enchantmentData: EnchantmentData, x: Int, y: Int, width: Int,
 
     private var level: Int = enchantmentData.enchantmentLevel
 
-    def setActive() = active = true
-    def setDeactive() = active = false
+    def activate() = active = true
+    def deactivate() = active = false
     def getEnchantment = enchantmentData.enchantmentobj
 
     def isVisible: Boolean = {

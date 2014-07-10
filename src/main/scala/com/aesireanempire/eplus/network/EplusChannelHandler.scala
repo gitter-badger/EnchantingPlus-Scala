@@ -1,8 +1,6 @@
 package com.aesireanempire.eplus.network
 
-import cpw.mods.fml.common.FMLCommonHandler
 import cpw.mods.fml.common.network.{NetworkRegistry, FMLIndexedMessageToMessageCodec}
-import cpw.mods.fml.relauncher.Side
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import net.minecraft.entity.player.EntityPlayer
@@ -17,7 +15,7 @@ class EplusChannelHandler extends FMLIndexedMessageToMessageCodec[EplusPacket] {
     }
 
     override def decodeInto(ctx: ChannelHandlerContext, source: ByteBuf, msg: EplusPacket): Unit = {
-        var player: EntityPlayer = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get().asInstanceOf[NetHandlerPlayServer].playerEntity
+        val player: EntityPlayer = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get().asInstanceOf[NetHandlerPlayServer].playerEntity
         msg.readData(source)
 
         msg.execute(player)

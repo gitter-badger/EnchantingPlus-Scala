@@ -59,16 +59,16 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
 
         val newEnchants = data.filter(_.getLevel > 0)
 
-        if(newEnchants.isEmpty) data.foreach(_.setActive())
+        if(newEnchants.isEmpty) data.foreach(_.activate())
 
         for (newEnchant <- newEnchants;
              enchantment <- data
         ) {
             if(enchantment.getEnchantment.canApplyTogether(newEnchant.getEnchantment)){
-                enchantment.setActive()
+                enchantment.activate()
             } else {
                 if(!newEnchants.contains(enchantment)){
-                    enchantment.setDeactive()
+                    enchantment.deactivate()
                 }
             }
         }
@@ -107,11 +107,12 @@ class ListBox(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLo
         }
     }
 
-    //correct space for this!?
     override def actionPerformed(button: GuiButton): Unit = {
-        val list = data.filter(e => e.getLevel != 0).flatMap(e => Map(e.enchantmentData.enchantmentobj -> e.getLevel)).toMap
+        if (data.filter(e => e.getLevel != e.enchantmentData.enchantmentLevel).length > 0) {
+            val list = data.filter(e => e.getLevel != 0).flatMap(e => Map(e.enchantmentData.enchantmentobj -> e.getLevel)).toMap
 
-        EnchantingPlus.sendToServer(new EnchantPacket(list))
+            EnchantingPlus.sendToServer(new EnchantPacket(list))
+        }
     }
 }
 
