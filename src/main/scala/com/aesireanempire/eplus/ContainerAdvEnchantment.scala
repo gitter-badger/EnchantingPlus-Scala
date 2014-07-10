@@ -16,18 +16,20 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
     var dataSet = Array.empty[EnchantmentData]
     var hasUpdated = false
 
-    addSlotToContainer(new SlotEnchantment(this, tableInventory, 0, 37, 17))
+    addSlotToContainer(new SlotEnchantment(this, tableInventory, 0, 64, 17))
     bindPlayerInventory()
 
     def bindPlayerInventory() = {
+        val xStart = 47
+
         for (i <- 0 until 3) {
             for (j <- 0 until 9) {
-                addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 17 + j * 18 + 26, 91 + i * 18))
+                addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 17 + j * 18 + xStart, 91 + i * 18))
             }
         }
 
         for (i <- 0 until 9) {
-            addSlotToContainer(new Slot(player.inventory, i, 17 + i * 18 + 26, 149))
+            addSlotToContainer(new Slot(player.inventory, i, 17 + i * 18 + xStart, 149))
         }
 
         for (i <- 0 until 4) {
@@ -53,16 +55,21 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
         }
     }
 
-    def enchantItem(player : EntityPlayer, enchants: collection.mutable.Map[Int, Int], cost : Int): Boolean = {
+    def enchantItem(player: EntityPlayer, enchants: collection.mutable.Map[Int, Int], cost: Int): Boolean = {
         val itemStack = tableInventory.getStackInSlot(0)
 
-        if(itemStack == null) return false
+        if (itemStack == null) return false
 
         EnchantmentHelper.setEnchantments(enchants, itemStack)
+
+        if (enchants.isEmpty && AdvEnchantmentHelper.isBook(itemStack)) {
+            itemStack.setTagCompound(null)
+        }
+
         true
     }
 
-    override def transferStackInSlot(player : EntityPlayer, slot : Int): ItemStack = {
+    override def transferStackInSlot(player: EntityPlayer, slot: Int): ItemStack = {
         null
     }
 }

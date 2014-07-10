@@ -21,13 +21,13 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
     private val debug = false
 
     override def initGui(): Unit = {
-        xSize = 235
+        xSize = 256
         ySize = 182
 
         super.initGui()
 
-        val scrollBar = new ScrollBar(guiLeft + 206, guiTop + 16, 12, 72, ELEMENTS_TEXTURE, this)
-        val listBox = new ListBox(guiLeft + 61, guiTop + 16, 144, 72, ELEMENTS_TEXTURE, this)
+        val scrollBar = new ScrollBar(guiLeft + 231, guiTop + 16, 12, 72, ELEMENTS_TEXTURE, this)
+        val listBox = new ListBox(guiLeft + 85, guiTop + 16, 140, 72, ELEMENTS_TEXTURE, this)
 
         scrollBar.linkElement(listBox)
 
@@ -35,17 +35,19 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
 
         elements = listBox :: scrollBar :: List.empty
 
-        val enchantButton = new GuiButton(0, guiLeft + 35, guiTop + 40, 20, 20, "E")
+        val enchantButton = new GuiButton(0, guiLeft + 62, guiTop + 40, 20, 20, "E")
 
         buttonList.asInstanceOf[java.util.List[GuiButton]].add(enchantButton)
+
+        getContainer.hasUpdated = true
     }
 
 
-    override def actionPerformed(button : GuiButton): Unit = {
-        if(button.displayString.equals("E")) {
+    override def actionPerformed(button: GuiButton): Unit = {
+        if (button.displayString.equals("E")) {
             elements.head.actionPerformed(button)
         }
-        
+
     }
 
     override def handleMouseInput(): Unit = {
