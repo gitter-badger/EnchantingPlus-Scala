@@ -1,7 +1,7 @@
 package com.aesireanempire.eplus
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
-import com.aesireanempire.eplus.gui.elements.{GuiElement, ListBoxEnchantments, ScrollBar}
+import com.aesireanempire.eplus.gui.elements.{ListBoxInfo, GuiElement, ListBoxEnchantments, ScrollBar}
 import net.minecraft.client.gui.{GuiButton, Gui}
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.player.EntityPlayer
@@ -28,18 +28,20 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
 
         val scrollBar = new ScrollBar(guiLeft + 231, guiTop + 16, 12, 72, ELEMENTS_TEXTURE, this)
         val listBox = new ListBoxEnchantments(guiLeft + 85, guiTop + 16, 140, 72, ELEMENTS_TEXTURE, this)
+        val infoBox = new ListBoxInfo(guiLeft + 30, guiTop + 16, 30, 43, ELEMENTS_TEXTURE, this)
+        infoBox.setData("B: 0" +: "L: 0" +: "C: 0" +: Array.empty[String])
 
         scrollBar.linkElement(listBox)
 
         listBox.setDataProvider(getContainer.dataProvider)
 
-        elements = listBox :: scrollBar :: List.empty
+        elements = listBox :: scrollBar :: infoBox :: List.empty
 
         val enchantButton = new GuiButton(0, guiLeft + 62, guiTop + 40, 20, 20, "E")
 
         buttonList.asInstanceOf[java.util.List[GuiButton]].add(enchantButton)
 
-        getContainer.hasUpdated = true
+        getContainer.dataProvider.hasUpdated = true
     }
 
 

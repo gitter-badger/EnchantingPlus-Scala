@@ -3,7 +3,7 @@ package com.aesireanempire.eplus.gui.elements
 import net.minecraft.client.gui.{Gui, GuiButton}
 
 abstract class ListItem[T](val data: T, x: Int, y: Int, width: Int, height: Int,
-                        box: ListBoxEnchantments) extends GuiElement(x, y, width, height, 0, null, box.screen) {
+                        box: ListBox[T]) extends GuiElement(x, y, width, height, 0, null, box.screen) {
 
     protected var active: Boolean = true
     protected var page: Double = 0
