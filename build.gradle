@@ -20,7 +20,7 @@ apply plugin: 'forge'
 
 version = "3.0"
 group= "com.aesireanempire.eplus" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
+archivesBaseName = "EnchantingPlus"
 
 minecraft {
     version = "1.7.10-10.13.0.1160"
@@ -46,6 +46,8 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
+
+version = "${project.minecraft.version}-${project.version}"
 
 processResources
 {
