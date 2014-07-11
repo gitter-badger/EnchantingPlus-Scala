@@ -1,7 +1,7 @@
 package com.aesireanempire.eplus
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
-import com.aesireanempire.eplus.gui.elements.{GuiElement, ListBox, ScrollBar}
+import com.aesireanempire.eplus.gui.elements.{GuiElement, ListBoxEnchantments, ScrollBar}
 import net.minecraft.client.gui.{GuiButton, Gui}
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.player.EntityPlayer
@@ -27,11 +27,11 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         super.initGui()
 
         val scrollBar = new ScrollBar(guiLeft + 231, guiTop + 16, 12, 72, ELEMENTS_TEXTURE, this)
-        val listBox = new ListBox(guiLeft + 85, guiTop + 16, 140, 72, ELEMENTS_TEXTURE, this)
+        val listBox = new ListBoxEnchantments(guiLeft + 85, guiTop + 16, 140, 72, ELEMENTS_TEXTURE, this)
 
         scrollBar.linkElement(listBox)
 
-        listBox.setDataProvider(getContainer)
+        listBox.setDataProvider(getContainer.dataProvider)
 
         elements = listBox :: scrollBar :: List.empty
 

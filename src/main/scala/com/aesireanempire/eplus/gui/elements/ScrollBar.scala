@@ -8,12 +8,12 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
                 screen: GUIAdvEnchantment) extends GuiElement(posX,
     posY, width, height, 48, texture, screen) {
 
-    private var element: ListBox = null
+    private var element: ListBoxEnchantments = null
     private var pages: Int = 0
 
     private var movementInterval: Int = 0
 
-    def linkElement(element: ListBox) = {
+    def linkElement(element: ListBoxEnchantments) = {
         this.element = element
     }
 
