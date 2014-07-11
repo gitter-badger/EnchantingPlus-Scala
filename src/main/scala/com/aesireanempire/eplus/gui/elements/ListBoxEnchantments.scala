@@ -29,18 +29,22 @@ class ListBoxEnchantments(posX: Int, posY: Int, width: Int, height: Int, texture
 
         if (newEnchants.isEmpty) data.foreach(_.activate())
 
-        for (newEnchant <- newEnchants;
-             enchantment <- data
-        ) {
-            if (enchantment.asInstanceOf[listItemEnchantments]
-                .getEnchantment
-                .canApplyTogether(newEnchant
-                .asInstanceOf[listItemEnchantments]
-                .getEnchantment)) {
-                enchantment.activate()
-            } else {
-                if (!newEnchants.contains(enchantment)) {
-                    enchantment.deactivate()
+        for (enchantment <- data) {
+            var deactivate = false
+            for (newEnchant <- newEnchants) {
+                if (enchantment.asInstanceOf[listItemEnchantments]
+                    .getEnchantment
+                    .canApplyTogether(newEnchant
+                    .asInstanceOf[listItemEnchantments]
+                    .getEnchantment)) {
+                    if(!deactivate) {
+                        enchantment.activate()
+                    }
+                } else {
+                    if (!newEnchants.contains(enchantment)) {
+                        enchantment.deactivate()
+                        deactivate = true
+                    }
                 }
             }
         }
