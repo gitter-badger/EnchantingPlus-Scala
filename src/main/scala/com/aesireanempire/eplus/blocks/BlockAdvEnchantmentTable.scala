@@ -2,11 +2,14 @@ package com.aesireanempire.eplus.blocks
 
 import com.aesireanempire.eplus.EnchantingPlus
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
+import com.aesireanempire.eplus.render.BlockRenderingHandler
 import com.aesireanempire.eplus.tabs.CreativeTabBlocks
-import net.minecraft.block.BlockEnchantmentTable
+import net.minecraft.block.{BlockPistonBase, BlockEnchantmentTable}
 import net.minecraft.block.material.Material
 import net.minecraft.client.renderer.texture.IIconRegister
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.IIcon
 import net.minecraft.world.World
@@ -15,9 +18,6 @@ object BlockAdvEnchantmentTable extends BlockEnchantmentTable() {
 
     setCreativeTab(CreativeTabBlocks)
     setBlockName("advEnchantmentTable")
-
-    private var topIcon: IIcon = null
-    private var bottomIcon: IIcon = null
 
     override def createNewTileEntity(world: World, meta: Int): TileEntity = new TileEntityAdvEnchantmentTable()
 
@@ -33,17 +33,15 @@ object BlockAdvEnchantmentTable extends BlockEnchantmentTable() {
         true
     }
 
-    override def getIcon(side : Int, meta : Int): IIcon = {
-        side match {
-            case 0 => bottomIcon
-            case 1 => topIcon
-            case _ => blockIcon
-        }
+
+    override def onBlockPlacedBy(world: World, x: Int, y: Int, z: Int, entity: EntityLivingBase, statck: ItemStack) {
+        val direction = BlockPistonBase.determineOrientation(world, x, y, z, entity)
+        world.setBlockMetadataWithNotify(x, y, z, direction, 2)
     }
 
-    override def registerBlockIcons(iconRegister : IIconRegister): Unit = {
-        blockIcon =  iconRegister.registerIcon("eplus:enchanting_table_side")
-        bottomIcon = iconRegister.registerIcon("eplus:enchanting_table_bottom")
-        topIcon = iconRegister.registerIcon("eplus:enchanting_table_top")
-    }
+    override def getRenderType: Int = BlockRenderingHandler.getRenderId
+
+    override def renderAsNormalBlock(): Boolean = false
+
+    override def isOpaqueCube: Boolean = false
 }

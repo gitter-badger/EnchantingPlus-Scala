@@ -5,8 +5,8 @@ import java.util
 import com.aesireanempire.eplus.blocks.EplusBlocks
 import com.aesireanempire.eplus.handlers.{ConfigHandler, GUIHandler}
 import com.aesireanempire.eplus.items.EplusItems
-import com.aesireanempire.eplus.network.{EplusChannelHandler, EplusPacket, PacketHandler}
-import cpw.mods.fml.common.Mod
+import com.aesireanempire.eplus.network.{CommonProxy, EplusChannelHandler, EplusPacket, PacketHandler}
+import cpw.mods.fml.common.{SidedProxy, Mod}
 import cpw.mods.fml.common.event._
 import cpw.mods.fml.common.network.{FMLOutboundHandler, FMLEmbeddedChannel, NetworkRegistry}
 import cpw.mods.fml.relauncher.Side
@@ -19,6 +19,9 @@ object EnchantingPlus {
     final val MODID = "eplus"
 
     var channels = collection.mutable.Map.empty[Side, FMLEmbeddedChannel]
+
+    @SidedProxy(clientSide = "com.aesireanempire.eplus.network.ClientProxy", serverSide = "com.aesireanempire.eplus.network.CommonProxy")
+    var proxy: CommonProxy = null
 
     @Mod.EventHandler
     def preInit(event: FMLPreInitializationEvent) {
@@ -40,6 +43,7 @@ object EnchantingPlus {
 
         //Register Events
         NetworkRegistry.INSTANCE.registerGuiHandler(this, GUIHandler)
+        proxy.init()
     }
 
     @Mod.EventHandler
