@@ -1,7 +1,7 @@
 package com.aesireanempire.eplus
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
-import com.aesireanempire.eplus.gui.elements.{DataProviderEnchantmentData, DataProviderInformation}
+import com.aesireanempire.eplus.gui.elements.{DataProviderEnchantmentData, DataProviderInformation, ListItem, listItemEnchantments}
 import com.aesireanempire.eplus.inventory.{SlotArmor, SlotEnchantment, TableInventory}
 import net.minecraft.enchantment.{EnchantmentData, EnchantmentHelper}
 import net.minecraft.entity.player.EntityPlayer
@@ -19,14 +19,13 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
 
     var dataProvider = new DataProviderEnchantmentData
     var infoProvider = new DataProviderInformation
-    var hasUpdated = false
 
     addSlotToContainer(new SlotEnchantment(this, tableInventory, 0, 64, 17))
     bindPlayerInventory()
 
     setInformationPlayerLever(player.experienceLevel)
     setInformationBookCase()
-    setInformationCost()
+    setInformationCost(Array.empty[ListItem[EnchantmentData]])
 
     def bindPlayerInventory() = {
         val xStart = 47
@@ -54,8 +53,30 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
         infoProvider.setInfoAt(1, "B:" + getNumberOfBookcases.toString)
     }
 
-    def setInformationCost() {
-        infoProvider.setInfoAt(2, "C:" + 0)
+    def setInformationCost(items: Array[ListItem[EnchantmentData]]) {
+        infoProvider.setInfoAt(2, "C:" + getEnchantmentCost(items))
+    }
+
+    private def getEnchantmentLevel(effectID: Int): Int = {
+        for (enchantment <- dataProvider.dataSet) {
+            if (enchantment.enchantmentobj.effectId == effectID) {
+                return enchantment.enchantmentLevel
+            }
+        }
+        0
+    }
+
+    private def getEnchantmentCost(enchantments: Array[ListItem[EnchantmentData]]): Int = {
+        var cost = 0
+
+        for (item: ListItem[EnchantmentData] <- enchantments) {
+            val enchant = item.asInstanceOf[listItemEnchantments]
+            val newLevel = enchant.getLevel
+            val oldLevel = getEnchantmentLevel(enchant.getEnchantment.effectId)
+
+            cost += newLevel - oldLevel
+        }
+        cost
     }
 
     private def getNumberOfBookcases: Float = {

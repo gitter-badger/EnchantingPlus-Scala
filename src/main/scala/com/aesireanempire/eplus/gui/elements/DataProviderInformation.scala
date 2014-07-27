@@ -2,7 +2,7 @@ package com.aesireanempire.eplus.gui.elements
 
 class DataProviderInformation extends DataProvider[String]{
     def setInfoAt(index: Int, info: String) = {
-        if(dataSet.length >= index) {
+        if(dataSet.length <= index) {
             dataSet = dataSet :+ info
         } else {
             dataSet(index) = info

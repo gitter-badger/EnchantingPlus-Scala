@@ -70,6 +70,8 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
     override def drawGuiContainerBackgroundLayer(f: Float, x: Int, y: Int): Unit = {
         drawTextureBackground()
 
+        getContainer.setInformationCost(elements.head.asInstanceOf[ListBoxEnchantments].getData)
+
         elements.foreach(_.update())
         elements.foreach(_.draw())
 

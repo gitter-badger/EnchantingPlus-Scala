@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation
 class ListBoxEnchantments(posX: Int, posY: Int, width: Int, height: Int, texture: ResourceLocation,
                           screen: GUIAdvEnchantment) extends ListBox[EnchantmentData](posX, posY, width, height,
     texture, screen) {
+    def getData: Array[ListItem[EnchantmentData]] = data.clone()
 
     override def setData(enchantments: Array[EnchantmentData]) = {
 
