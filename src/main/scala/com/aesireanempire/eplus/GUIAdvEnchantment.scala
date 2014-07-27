@@ -28,8 +28,8 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
 
         val scrollBar = new ScrollBar(guiLeft + 231, guiTop + 16, 12, 72, ELEMENTS_TEXTURE, this)
         val listBox = new ListBoxEnchantments(guiLeft + 85, guiTop + 16, 140, 72, ELEMENTS_TEXTURE, this)
-        val infoBox = new ListBoxInfo(guiLeft + 30, guiTop + 16, 30, 43, ELEMENTS_TEXTURE, this)
-        infoBox.setData("B: 0" +: "L: 0" +: "C: 0" +: Array.empty[String])
+        val infoBox = new ListBoxInfo(guiLeft + 25, guiTop + 16, 36, 43, ELEMENTS_TEXTURE, this)
+        infoBox.setDataProvider(getContainer.infoProvider)
 
         scrollBar.linkElement(listBox)
 
@@ -42,6 +42,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         buttonList.asInstanceOf[java.util.List[GuiButton]].add(enchantButton)
 
         getContainer.dataProvider.hasUpdated = true
+        getContainer.infoProvider.hasUpdated = true
     }
 
 

@@ -1,12 +1,15 @@
 package com.aesireanempire.eplus
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
-import com.aesireanempire.eplus.gui.elements.DataProviderEnchantmentData
+import com.aesireanempire.eplus.gui.elements.{DataProviderEnchantmentData, DataProviderInformation}
 import com.aesireanempire.eplus.inventory.{SlotArmor, SlotEnchantment, TableInventory}
-import net.minecraft.enchantment.{EnchantmentHelper, EnchantmentData, Enchantment}
+import net.minecraft.enchantment.{EnchantmentData, EnchantmentHelper}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.{Container, IInventory, Slot}
 import net.minecraft.item.ItemStack
+import net.minecraft.world.World
+import net.minecraftforge.common.ForgeHooks
+
 import scala.collection.JavaConversions._
 
 
@@ -15,10 +18,15 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
     val tableInventory: IInventory = new TableInventory(this, "enchant", true, 1)
 
     var dataProvider = new DataProviderEnchantmentData
+    var infoProvider = new DataProviderInformation
     var hasUpdated = false
 
     addSlotToContainer(new SlotEnchantment(this, tableInventory, 0, 64, 17))
     bindPlayerInventory()
+
+    setInformationPlayerLever(player.experienceLevel)
+    setInformationBookCase()
+    setInformationCost()
 
     def bindPlayerInventory() = {
         val xStart = 47
@@ -38,6 +46,45 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
         }
     }
 
+    def setInformationPlayerLever(level: Int) {
+        infoProvider.setInfoAt(0, "P:" + level.toString)
+    }
+
+    def setInformationBookCase() {
+        infoProvider.setInfoAt(1, "B:" + getNumberOfBookcases.toString)
+    }
+
+    def setInformationCost() {
+        infoProvider.setInfoAt(2, "C:" + 0)
+    }
+
+    private def getNumberOfBookcases: Float = {
+        var temp: Float = 0
+        val world: World = tile.getWorldObj
+        val xCoord: Int = tile.xCoord
+        val yCoord: Int = tile.yCoord
+        val zCoord: Int = tile.zCoord
+
+        for (
+            x <- -1 to 1;
+            z <- -1 to 1
+        ) {
+
+            if ((x != 0 || z != 0) && world.isAirBlock(xCoord + x, yCoord, zCoord + z) && world.isAirBlock(xCoord + x, yCoord + 1, zCoord + z)) {
+                temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord, zCoord + z * 2)
+                temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord + 1, zCoord + z * 2)
+
+                if (x != 0 && z != 0) {
+                    temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord, zCoord + z)
+                    temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord + 1, zCoord + z)
+                    temp += ForgeHooks.getEnchantPower(world, xCoord + x, yCoord, zCoord + z * 2)
+                    temp += ForgeHooks.getEnchantPower(world, xCoord + x, yCoord + 1, zCoord + z * 2)
+                }
+            }
+        }
+        temp
+    }
+
     override def canInteractWith(player: EntityPlayer): Boolean = true
 
     override def onCraftMatrixChanged(par1IInventory: IInventory): Unit = {
@@ -50,10 +97,7 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
             newEnchantmentList = AdvEnchantmentHelper.buildEnchantmentList(itemStack)
         }
 
-        if (!dataProvider.dataSet.equals(newEnchantmentList)) {
-            dataProvider.dataSet = newEnchantmentList
-            dataProvider.hasUpdated = true
-        }
+        dataProvider.setData(newEnchantmentList)
     }
 
     def enchantItem(player: EntityPlayer, enchants: collection.mutable.Map[Int, Int], cost: Int): Boolean = {
