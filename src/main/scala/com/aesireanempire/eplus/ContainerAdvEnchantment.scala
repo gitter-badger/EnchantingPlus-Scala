@@ -66,7 +66,7 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
         0
     }
 
-    private def getEnchantmentCost(enchantments: Array[ListItem[EnchantmentData]]): Int = {
+    def getEnchantmentCost(enchantments: Array[ListItem[EnchantmentData]]): Int = {
         var cost = 0
 
         for (item: ListItem[EnchantmentData] <- enchantments) {
@@ -121,18 +121,31 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
         dataProvider.setData(newEnchantmentList)
     }
 
-    def enchantItem(player: EntityPlayer, enchants: collection.mutable.Map[Int, Int], cost: Int): Boolean = {
+    def tryEnchantItem(player: EntityPlayer, enchants: collection.mutable.Map[Int, Int], cost: Int): Boolean = {
         val itemStack = tableInventory.getStackInSlot(0)
 
         if (itemStack == null) return false
 
+        if (!player.capabilities.isCreativeMode) {
+            if (cost > player.experienceLevel) {
+                return false
+            }
+            if (cost >= 0 && cost > getNumberOfBookcases) {
+                return false
+            }
+        }
+        player.addExperienceLevel(-cost)
+
+        enchantItem(player, enchants, itemStack)
+        true
+    }
+
+    def enchantItem(player: EntityPlayer, enchants: collection.mutable.Map[Int, Int], itemStack: ItemStack) = {
         EnchantmentHelper.setEnchantments(enchants, itemStack)
 
         if (enchants.isEmpty && AdvEnchantmentHelper.isBook(itemStack)) {
             itemStack.setTagCompound(null)
         }
-
-        true
     }
 
     override def transferStackInSlot(player: EntityPlayer, slot: Int): ItemStack = {

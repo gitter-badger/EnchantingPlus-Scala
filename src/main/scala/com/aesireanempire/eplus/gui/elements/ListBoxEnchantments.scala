@@ -56,8 +56,8 @@ class ListBoxEnchantments(posX: Int, posY: Int, width: Int, height: Int, texture
             val list = data.filter(e => e.asInstanceOf[listItemEnchantments].getLevel != 0).flatMap(e => Map(e.data
                 .enchantmentobj -> e.asInstanceOf[listItemEnchantments]
                 .getLevel)).toMap
-
-            EnchantingPlus.sendToServer(new EnchantPacket(list))
+            val cost = screen.getContainer.getEnchantmentCost(data)
+            EnchantingPlus.sendToServer(new EnchantPacket(list, cost))
         }
     }
 }

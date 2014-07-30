@@ -119,7 +119,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         fontRendererObj.drawString(text, x, y, color)
     }
 
-    private def getContainer: ContainerAdvEnchantment = {
+    def getContainer: ContainerAdvEnchantment = {
         inventorySlots.asInstanceOf[ContainerAdvEnchantment]
     }
 

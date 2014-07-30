@@ -5,11 +5,12 @@ import io.netty.buffer.ByteBuf
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.player.EntityPlayer
 
-class EnchantPacket(enchantments: Map[Enchantment, Int]) extends EplusPacket {
+class EnchantPacket(enchantments: Map[Enchantment, Int], cost: Int) extends EplusPacket {
 
     var m_enchantments = collection.mutable.Map.empty[Int, Int]
+    var m_cost = cost
 
-    def this() = this(Map.empty[Enchantment, Int])
+    def this() = this(Map.empty[Enchantment, Int], 0)
 
     override def readData(buf: ByteBuf): Unit = {
         val length = buf.readInt()
@@ -20,6 +21,7 @@ class EnchantPacket(enchantments: Map[Enchantment, Int]) extends EplusPacket {
 
             m_enchantments = m_enchantments.++=(Map(enchantment -> level))
         }
+        m_cost = buf.readInt()
     }
 
     override def writeData(buf: ByteBuf): Unit = {
@@ -30,10 +32,11 @@ class EnchantPacket(enchantments: Map[Enchantment, Int]) extends EplusPacket {
             buf.writeInt(enchantment._1.effectId)
             buf.writeInt(enchantment._2)
         }
+        buf.writeInt(cost)
     }
 
     override def execute(player: EntityPlayer): Unit = {
-        player.openContainer.asInstanceOf[ContainerAdvEnchantment].enchantItem(player, m_enchantments, 0)
+        player.openContainer.asInstanceOf[ContainerAdvEnchantment].tryEnchantItem(player, m_enchantments, m_cost)
         player.openContainer.detectAndSendChanges()
     }
 }
