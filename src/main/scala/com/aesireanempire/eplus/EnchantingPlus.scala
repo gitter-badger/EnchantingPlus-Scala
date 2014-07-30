@@ -1,29 +1,58 @@
 package com.aesireanempire.eplus
 
-import cpw.mods.fml.common.Mod
+import java.util
+
+import com.aesireanempire.eplus.blocks.EplusBlocks
+import com.aesireanempire.eplus.handlers.{ConfigHandler, GUIHandler}
+import com.aesireanempire.eplus.items.EplusItems
+import com.aesireanempire.eplus.network.{CommonProxy, EplusChannelHandler, EplusPacket, PacketHandler}
+import cpw.mods.fml.common.{SidedProxy, Mod}
 import cpw.mods.fml.common.event._
+import cpw.mods.fml.common.network.{FMLOutboundHandler, FMLEmbeddedChannel, NetworkRegistry}
+import cpw.mods.fml.relauncher.Side
+
+import scala.collection.JavaConverters._
 
 @Mod(name = EnchantingPlus.MODNAME, modid = EnchantingPlus.MODID, modLanguage = "scala")
 object EnchantingPlus {
-  final val MODNAME = "Enchanting Plus"
-  final val MODID = "eplus"
+    final val MODNAME = "Enchanting Plus"
+    final val MODID = "eplus"
 
-  @Mod.EventHandler
-  def preInit(event: FMLPreInitializationEvent) {
-    //Config
-    //Register Items
-    //Register Blocks
-  }
+    var channels = collection.mutable.Map.empty[Side, FMLEmbeddedChannel]
 
-  @Mod.EventHandler
-  def init(event: FMLInitializationEvent) {
-    //Register WorldGen
-    //Register Recipes
-    //Register Events
-  }
+    @SidedProxy(clientSide = "com.aesireanempire.eplus.network.ClientProxy", serverSide = "com.aesireanempire.eplus.network.CommonProxy")
+    var proxy: CommonProxy = null
 
-  @Mod.EventHandler
-  def postInit(event: FMLPostInitializationEvent) {
+    @Mod.EventHandler
+    def preInit(event: FMLPreInitializationEvent) {
+        ConfigHandler.init(event.getSuggestedConfigurationFile)
 
-  }
+        EplusItems.preInit()
+        EplusBlocks.preInit()
+    }
+
+    @Mod.EventHandler
+    def init(event: FMLInitializationEvent) {
+        channels = NetworkRegistry.INSTANCE.newChannel("eplus", new EplusChannelHandler, new PacketHandler).asScala
+
+        //Register WorldGen
+        //Register Recipes
+
+        EplusItems.init()
+        EplusBlocks.init()
+
+        //Register Events
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, GUIHandler)
+        proxy.init()
+    }
+
+    @Mod.EventHandler
+    def postInit(event: FMLPostInitializationEvent) {
+
+    }
+
+    def sendToServer(packet: EplusPacket)= {
+        channels.get(Side.CLIENT).get.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER)
+        channels.get(Side.CLIENT).get.writeAndFlush(packet)
+    }
 }
