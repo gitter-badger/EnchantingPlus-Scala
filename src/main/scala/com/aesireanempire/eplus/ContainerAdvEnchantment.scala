@@ -151,4 +151,15 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
     override def transferStackInSlot(player: EntityPlayer, slot: Int): ItemStack = {
         null
     }
+
+    override def onContainerClosed(player: EntityPlayer): Unit = {
+        super.onContainerClosed(player)
+        for (i <- 0 until tableInventory.getSizeInventory) {
+            val stack = tableInventory.getStackInSlot(i)
+            if (stack != null) {
+                if (!player.inventory.addItemStackToInventory(stack))
+                    player.entityDropItem(stack, 0.2f)
+            }
+        }
+    }
 }
