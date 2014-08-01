@@ -65,7 +65,7 @@ class listItemEnchantments(enchantmentData: EnchantmentData, x: Int, y: Int, wid
     }
 
     override def handleToolTip(x: Int, y: Int): Unit = {
-        val toolTip: String = ToolTipHandler.getToolTip(enchantmentData.enchantmentobj).getOrElse(enchantmentData.enchantmentobj.getName)
+        val toolTip: String = ToolTipHandler.getToolTip(enchantmentData.enchantmentobj)
         if (toolTip.contains(";")) {
             screen.drawToolTip(toolTip.split(";"), x, y)
         } else {

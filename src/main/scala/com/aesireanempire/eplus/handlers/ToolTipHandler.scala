@@ -37,7 +37,7 @@ object ToolTipHandler {
         toolTips = createToolTipHashFromFile(toolTipFile)
     }
 
-    def getToolTip(enchantment: Enchantment): Option[String] = toolTips.get(enchantment)
+    def getToolTip(enchantment: Enchantment): String = toolTips.getOrElse(enchantment, enchantment.getName)
 
     private def createToolTipHashFromFile(file: File): Map[Enchantment, String] = {
         val toolTips = mutable.Map.empty[Enchantment, String]
