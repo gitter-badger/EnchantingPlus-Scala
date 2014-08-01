@@ -10,7 +10,7 @@ import scala.io.Source
 import scala.sys.process._
 
 object ToolTipHandler {
-    private val upstreamLocation = "https://dl.dropboxusercontent.com/u/21347544/EnchantingPlus/eplus_tooltips.txt"
+    private val upstreamLocation = "https://raw.githubusercontent.com/odininon/EnchantingPlus-Scala/develop/eplus_tooltips.txt"
 
     private var toolTips = Map.empty[Enchantment, String]
 
