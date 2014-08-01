@@ -2,7 +2,7 @@ package com.aesireanempire.eplus.gui.elements
 
 import com.aesireanempire.eplus.GUIAdvEnchantment
 import cpw.mods.fml.client.FMLClientHandler
-import net.minecraft.client.gui.{GuiButton, Gui}
+import net.minecraft.client.gui.{Gui, GuiButton}
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
 
@@ -20,8 +20,9 @@ abstract class GuiElement(var posX: Int, var posY: Int, var width: Int, var heig
         setPosition(posX, posY + dY.toInt)
     }
 
-    def setDragging(mouseX:Int, mouseY: Int, b: Boolean) = dragging = b
+    def setDragging(mouseX: Int, mouseY: Int, b: Boolean) = dragging = b
 
+    def handleToolTip(x: Int, y: Int)
 
     def isUnderMouse(x: Int, y: Int): Boolean = {
         if (posX <= x && x <= posX + width) {

@@ -1,6 +1,7 @@
 
 package com.aesireanempire.eplus.gui.elements
 
+import com.aesireanempire.eplus.handlers.ToolTipHandler
 import net.minecraft.client.gui.Gui
 import net.minecraft.enchantment.{Enchantment, EnchantmentData}
 
@@ -60,6 +61,15 @@ class listItemEnchantments(enchantmentData: EnchantmentData, x: Int, y: Int, wid
                     changeLevel(level)
                 }
             }
+        }
+    }
+
+    override def handleToolTip(x: Int, y: Int): Unit = {
+        val toolTip: String = ToolTipHandler.getToolTip(enchantmentData.enchantmentobj).getOrElse(enchantmentData.enchantmentobj.getName)
+        if (toolTip.contains(";")) {
+            screen.drawToolTip(toolTip.split(";"), x, y)
+        } else {
+            screen.drawToolTip(toolTip, x, y)
         }
     }
 }

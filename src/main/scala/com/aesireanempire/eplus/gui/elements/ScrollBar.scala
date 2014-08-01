@@ -82,4 +82,6 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
     }
 
     override def actionPerformed(button: GuiButton): Unit = {}
+
+    override def handleToolTip(x: Int, y: Int): Unit = {}
 }
