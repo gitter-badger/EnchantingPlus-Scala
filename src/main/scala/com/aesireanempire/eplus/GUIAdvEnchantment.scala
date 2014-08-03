@@ -1,17 +1,32 @@
 package com.aesireanempire.eplus
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
-import com.aesireanempire.eplus.gui.elements.{ListBoxInfo, GuiElement, ListBoxEnchantments, ScrollBar}
-import net.minecraft.client.gui.{GuiButton, Gui}
+import com.aesireanempire.eplus.gui.elements.{GuiElement, ListBoxEnchantments, ListBoxInfo, ScrollBar}
 import net.minecraft.client.gui.inventory.GuiContainer
+import net.minecraft.client.gui.{Gui, GuiButton, GuiScreen}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.input.Mouse
 import org.lwjgl.opengl.GL11
-import scala.collection.JavaConverters._
 
 class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTable) extends GuiContainer(new
         ContainerAdvEnchantment(player, tile)) {
+    def drawToolTip(strings: Array[String], x: Int, y: Int): Unit = {
+        val lines = new java.util.ArrayList[String]
+
+        for (string <- strings) {
+            val formatted = fontRendererObj.listFormattedStringToWidth(string.trim.capitalize, 200).asInstanceOf[java.util.List[String]]
+            lines.addAll(formatted)
+        }
+
+        drawHoveringText(lines, x, y, fontRendererObj)
+    }
+
+    def drawToolTip(text: String, x: Int, y: Int) = {
+        val lines = fontRendererObj.listFormattedStringToWidth(text, 200)
+
+        drawHoveringText(lines, x, y, fontRendererObj)
+    }
 
     final val TEXTURE: ResourceLocation = new ResourceLocation("eplus:textures/gui/enchant_classic.png")
     final val ELEMENTS_TEXTURE = new ResourceLocation("eplus:textures/gui/enchant_elements.png")
@@ -50,7 +65,15 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         if (button.displayString.equals("E")) {
             elements.head.actionPerformed(button)
         }
+    }
 
+
+    override def drawScreen(x: Int, y: Int, zDepth: Float): Unit = {
+        super.drawScreen(x, y, zDepth)
+        if (GuiScreen.isShiftKeyDown) {
+            val element = getElementUnderMouse(x, y)
+            if (element != null) element.handleToolTip(x, y)
+        }
     }
 
     override def handleMouseInput(): Unit = {

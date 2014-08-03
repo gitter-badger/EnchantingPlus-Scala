@@ -23,6 +23,10 @@ abstract class ListBox[T](posX: Int, posY: Int, width: Int, height: Int, texture
         this.dataProvider = dataProvider
     }
 
+    override def handleToolTip(x: Int, y: Int) = {
+        getListItem(x, y).handleToolTip(x, y)
+    }
+
     override def update() = {
         updateData()
         filterData()
@@ -50,6 +54,8 @@ abstract class ListBox[T](posX: Int, posY: Int, width: Int, height: Int, texture
         }
         null
     }
+
+
 
     override def mouseMoved(x: Int, y: Int): Unit = {
         val list = getListItem(x, y)

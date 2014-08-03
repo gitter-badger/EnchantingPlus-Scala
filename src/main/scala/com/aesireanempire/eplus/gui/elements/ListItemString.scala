@@ -10,4 +10,6 @@ ListItem(data, x, y, width, height, box) {
     override def drawExtras(): Unit = {}
 
     override def handleMouseInput(mouseEvent: Int, mouseX: Int, MouseY: Int): Unit = {}
+
+    override def handleToolTip(x: Int, y: Int): Unit = {}
 }

@@ -1,0 +1,23 @@
+enchantment.protect.all=Reduces damage from all sources
+enchantment.protect.fall=Protection against fall damage
+enchantment.protect.fire=Protection against fire damage; fire is extinguished faster
+enchantment.protect.projectile=Protection against damage from projectile entities
+enchantment.protect.explosion=Protection against explosion damage; reduces explosion recoil
+enchantment.oxygen=Decreases the rate of air loss underwater; increases time between damage while suffocating and drowning
+enchantment.waterWorker=Increases underwater mining rate
+enchantment.thorns=Chance of dealing damage to mobs or players attacking the wearer
+enchantment.damage.all=Extra damage
+enchantment.damage.undead=Extra damage to undead mobs
+enchantment.damage.athropods=Extra damage to spiders, cave spiders and silverfish
+enchantment.lootBonus=Mobs can drop more loot
+enchantment.digging=Faster resource gathering while in use
+enchantment.untouching=Mined blocks will drop themselves instead of the item(s) it should drop
+enchantment.durability=Increases durability
+enchantment.lootBonusDigger=Increases the drop rate of items from blocks
+enchantment.arrowDamage=Increases damage
+enchantment.arrowKnockback=Increases knockback
+enchantment.arrowFlame=Flaming arrows
+enchantment.arrowInfinite=Shooting consumes no arrows
+enchantment.knockback=Increases knockback
+enchantment.fire=Lights the target on fire
+

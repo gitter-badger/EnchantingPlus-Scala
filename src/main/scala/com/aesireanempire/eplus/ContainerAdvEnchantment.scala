@@ -84,6 +84,8 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
         if (itemStack == null) return 0
 
         val enchantability = itemStack.getItem.getItemEnchantability
+        if (enchantability == 0) return 0
+
         val maxLevel = enchantment.getMaxLevel
         val deltaLevel = newLevel - oldLevel
 

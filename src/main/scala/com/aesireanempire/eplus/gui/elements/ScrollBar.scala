@@ -25,7 +25,7 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
 
     override def drawExtras() {
         screen.mc.renderEngine.bindTexture(screen.TEXTURE)
-        drawTexturedModalRect(posX, posY + scrollPosition, 0, 182, 12, 15)
+        screen.drawTexturedModalRect(posX, posY + scrollPosition, 0, 182, 12, 15)
     }
 
     override def update() = {
@@ -82,4 +82,6 @@ class ScrollBar(posX: Int, posY: Int, width: Int, height: Int, texture: Resource
     }
 
     override def actionPerformed(button: GuiButton): Unit = {}
+
+    override def handleToolTip(x: Int, y: Int): Unit = {}
 }

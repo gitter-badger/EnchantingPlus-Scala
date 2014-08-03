@@ -1,9 +1,10 @@
 package com.aesireanempire.eplus
 
-import java.util
+import java.io.File
+import java.nio.file.Path
 
 import com.aesireanempire.eplus.blocks.EplusBlocks
-import com.aesireanempire.eplus.handlers.{ConfigHandler, GUIHandler}
+import com.aesireanempire.eplus.handlers.{ToolTipHandler, ConfigHandler, GUIHandler}
 import com.aesireanempire.eplus.items.EplusItems
 import com.aesireanempire.eplus.network.{CommonProxy, EplusChannelHandler, EplusPacket, PacketHandler}
 import cpw.mods.fml.common.{SidedProxy, Mod}
@@ -12,6 +13,8 @@ import cpw.mods.fml.common.network.{FMLOutboundHandler, FMLEmbeddedChannel, Netw
 import cpw.mods.fml.relauncher.Side
 
 import scala.collection.JavaConverters._
+import scala.reflect.io.Path
+
 
 @Mod(name = EnchantingPlus.MODNAME, modid = EnchantingPlus.MODID, modLanguage = "scala")
 object EnchantingPlus {
@@ -29,6 +32,8 @@ object EnchantingPlus {
 
         EplusItems.preInit()
         EplusBlocks.preInit()
+
+        ToolTipHandler.init(new File(event.getModConfigurationDirectory.toPath + File.separator + ".."))
     }
 
     @Mod.EventHandler
