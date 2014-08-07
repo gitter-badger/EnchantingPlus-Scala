@@ -6,25 +6,25 @@ import net.minecraft.item.ItemStack
 
 object EplusItems {
 
-    /**
-     * Creates any item objects that need to be initialized.
-     */
-    def preInit() = {
-        GameRegistry.registerItem(ItemAdvTableUpgrade, ItemAdvTableUpgrade.getUnlocalizedName)
+  /**
+   * Creates any item objects that need to be initialized.
+   */
+  def preInit() = {
+    GameRegistry.registerItem(ItemAdvTableUpgrade, ItemAdvTableUpgrade.getUnlocalizedName)
 
-    }
+  }
 
-    /**
-     * Registers all recipes needed for items
-     */
-    def init() = {
-        GameRegistry.addShapedRecipe(
-            new ItemStack(ItemAdvTableUpgrade),
-            "gbg", "o o", "geg",
-            'g'.asInstanceOf[Character], Items.gold_ingot, 'b'.asInstanceOf[Character], Items.writable_book,
-            'o'.asInstanceOf[Character], Blocks.obsidian,
-            'e'.asInstanceOf[Character], Items.ender_eye
-        )
-    }
+  /**
+   * Registers all recipes needed for items
+   */
+  def init() = {
+    GameRegistry.addShapedRecipe(
+      new ItemStack(ItemAdvTableUpgrade),
+      "gbg", "o o", "geg",
+      'g'.asInstanceOf[Character], Items.gold_ingot, 'b'.asInstanceOf[Character], Items.writable_book,
+      'o'.asInstanceOf[Character], Blocks.obsidian,
+      'e'.asInstanceOf[Character], Items.ender_eye
+    )
+  }
 
 }
