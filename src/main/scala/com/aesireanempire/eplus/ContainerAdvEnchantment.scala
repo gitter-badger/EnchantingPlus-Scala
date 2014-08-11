@@ -83,11 +83,15 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
     val itemStack = tableInventory.getStackInSlot(0)
     if (itemStack == null) return 0
 
-    val enchantability = itemStack.getItem.getItemEnchantability
-    if (enchantability == 0) return 0
+        var enchantability = itemStack.getItem.getItemEnchantability
+        if (enchantability == 0) return 0
 
-    val maxLevel = enchantment.getMaxLevel
-    val deltaLevel = newLevel - oldLevel
+        if(enchantability <= 5) {
+            enchantability = 5
+        }
+
+        val maxLevel = enchantment.getMaxLevel
+        val deltaLevel = newLevel - oldLevel
 
     val averageEnchantability = (enchantment.getMaxEnchantability(maxLevel) + enchantment.getMinEnchantability(maxLevel)) / 2
 
