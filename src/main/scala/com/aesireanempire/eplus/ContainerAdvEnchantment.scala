@@ -43,54 +43,27 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
     for (i <- 0 until 4) {
       addSlotToContainer(new SlotArmor(i, player, 39 - i, 7, 24 + i * 19))
     }
-  }
-
-  def setInformationPlayerLever(level: Int) {
-    infoProvider.setInfoAt(0, "P:" + level.toString)
-  }
-
-  def setInformationBookCase() {
-    infoProvider.setInfoAt(1, "B:" + getNumberOfBookcases.toString)
-  }
-
-  private def getNumberOfBookcases: Float = {
-    var temp: Float = 0
-    val world: World = tile.getWorldObj
-    val xCoord: Int = tile.xCoord
-    val yCoord: Int = tile.yCoord
-    val zCoord: Int = tile.zCoord
-
-    for (
-      x <- -1 to 1;
-      z <- -1 to 1
-    ) {
-
-      if ((x != 0 || z != 0) && world.isAirBlock(xCoord + x, yCoord, zCoord + z) && world.isAirBlock(xCoord + x, yCoord + 1, zCoord + z)) {
-        temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord, zCoord + z * 2)
-        temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord + 1, zCoord + z * 2)
-
-        if (x != 0 && z != 0) {
-          temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord, zCoord + z)
-          temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord + 1, zCoord + z)
-          temp += ForgeHooks.getEnchantPower(world, xCoord + x, yCoord, zCoord + z * 2)
-          temp += ForgeHooks.getEnchantPower(world, xCoord + x, yCoord + 1, zCoord + z * 2)
-        }
-      }
     }
-    temp
-  }
 
-  def setInformationCost(items: Array[ListItem[EnchantmentData]]) {
-    infoProvider.setInfoAt(2, "C:" + getEnchantmentCost(items))
-  }
+    def setInformationPlayerLever(level: Int) {
+        infoProvider.setInfoAt(0, "P:" + level.toString)
+    }
 
-  def getEnchantmentCost(enchantments: Array[ListItem[EnchantmentData]]): Int = {
-    var cost = 0
+    def setInformationBookCase() {
+        infoProvider.setInfoAt(1, "B:" + getNumberOfBookcases.toString)
+    }
+
+    def setInformationCost(items: Array[ListItem[EnchantmentData]]) {
+        infoProvider.setInfoAt(2, "C:" + getEnchantmentCost(items))
+    }
+
+    def getEnchantmentCost(enchantments: Array[ListItem[EnchantmentData]]): Int = {
+        var cost = 0
 
     for (item: ListItem[EnchantmentData] <- enchantments) {
       val enchant = item.asInstanceOf[listItemEnchantments]
       val newLevel = enchant.getLevel
-      val oldLevel = getEnchantmentLevel(enchant.getEnchantment.effectId)
+            val oldLevel = enchant.oldLevel
 
       cost += calculateCost(enchant.getEnchantment, newLevel, oldLevel)
     }

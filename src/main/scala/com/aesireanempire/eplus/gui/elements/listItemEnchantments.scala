@@ -9,7 +9,9 @@ class listItemEnchantments(enchantmentData: EnchantmentData, x: Int, y: Int, wid
                            height: Int, box: ListBoxEnchantments) extends ListItem(enchantmentData, x, y, width,
   height, box) {
 
-  private var level: Int = enchantmentData.enchantmentLevel
+    def oldLevel = enchantmentData.enchantmentLevel
+
+    private var level: Int = enchantmentData.enchantmentLevel
 
   def getEnchantment = enchantmentData.enchantmentobj
 
