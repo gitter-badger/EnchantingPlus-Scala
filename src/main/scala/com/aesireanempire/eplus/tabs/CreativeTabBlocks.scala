@@ -5,5 +5,5 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.Item
 
 object CreativeTabBlocks extends CreativeTabs("eplus.blocks") {
-  override def getTabIconItem: Item = Item.getItemFromBlock(BlockAdvEnchantmentTable)
+    override def getTabIconItem: Item = Item.getItemFromBlock(BlockAdvEnchantmentTable)
 }

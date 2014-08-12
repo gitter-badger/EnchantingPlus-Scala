@@ -10,151 +10,154 @@ import org.lwjgl.input.Mouse
 import org.lwjgl.opengl.GL11
 
 class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTable) extends GuiContainer(new
-    ContainerAdvEnchantment(player, tile)) {
-  final val TEXTURE: ResourceLocation = new ResourceLocation("eplus:textures/gui/enchant_classic.png")
-  final val ELEMENTS_TEXTURE = new ResourceLocation("eplus:textures/gui/enchant_elements.png")
-  private val debug = false
-  private var elements = List.empty[GuiElement]
+        ContainerAdvEnchantment(player, tile)) {
+    def drawToolTip(strings: Array[String], x: Int, y: Int): Unit = {
+        val lines = new java.util.ArrayList[String]
 
-  def drawToolTip(strings: Array[String], x: Int, y: Int): Unit = {
-    val lines = new java.util.ArrayList[String]
+        for (string <- strings) {
+            val formatted = fontRendererObj.listFormattedStringToWidth(string.trim.capitalize, 200).asInstanceOf[java.util.List[String]]
+            lines.addAll(formatted)
+        }
 
-    for (string <- strings) {
-      val formatted = fontRendererObj.listFormattedStringToWidth(string.trim.capitalize, 200).asInstanceOf[java.util.List[String]]
-      lines.addAll(formatted)
+        drawHoveringText(lines, x, y, fontRendererObj)
     }
 
-    drawHoveringText(lines, x, y, fontRendererObj)
-  }
+    def drawToolTip(text: String, x: Int, y: Int) = {
+        val lines = fontRendererObj.listFormattedStringToWidth(text, 200)
 
-  def drawToolTip(text: String, x: Int, y: Int) = {
-    val lines = fontRendererObj.listFormattedStringToWidth(text, 200)
-
-    drawHoveringText(lines, x, y, fontRendererObj)
-  }
-
-  override def initGui(): Unit = {
-    xSize = 256
-    ySize = 182
-
-    super.initGui()
-
-    val scrollBar = new ScrollBar(guiLeft + 231, guiTop + 16, 12, 72, ELEMENTS_TEXTURE, this)
-    val listBox = new ListBoxEnchantments(guiLeft + 85, guiTop + 16, 140, 72, ELEMENTS_TEXTURE, this)
-    val infoBox = new ListBoxInfo(guiLeft + 25, guiTop + 16, 36, 43, ELEMENTS_TEXTURE, this)
-    infoBox.setDataProvider(getContainer.infoProvider)
-
-    scrollBar.linkElement(listBox)
-
-    listBox.setDataProvider(getContainer.dataProvider)
-
-    elements = listBox :: scrollBar :: infoBox :: List.empty
-
-    val enchantButton = new GuiButton(0, guiLeft + 62, guiTop + 40, 20, 20, "E")
-
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(enchantButton)
-
-    getContainer.dataProvider.hasUpdated = true
-    getContainer.infoProvider.hasUpdated = true
-  }
-
-
-  override def actionPerformed(button: GuiButton): Unit = {
-    if (button.displayString.equals("E")) {
-      elements.head.actionPerformed(button)
+        drawHoveringText(lines, x, y, fontRendererObj)
     }
-  }
 
+    final val TEXTURE: ResourceLocation = new ResourceLocation("eplus:textures/gui/enchant_classic.png")
+    final val ELEMENTS_TEXTURE = new ResourceLocation("eplus:textures/gui/enchant_elements.png")
 
-  override def drawScreen(x: Int, y: Int, zDepth: Float): Unit = {
-    super.drawScreen(x, y, zDepth)
-    if (GuiScreen.isShiftKeyDown) {
-      val element = getElementUnderMouse(x, y)
-      if (element != null) element.handleToolTip(x, y)
+    private var elements = List.empty[GuiElement]
+
+    private val debug = false
+
+    override def initGui(): Unit = {
+        xSize = 256
+        ySize = 182
+
+        super.initGui()
+
+        val scrollBar = new ScrollBar(guiLeft + 231, guiTop + 16, 12, 72, ELEMENTS_TEXTURE, this)
+        val listBox = new ListBoxEnchantments(guiLeft + 85, guiTop + 16, 140, 72, ELEMENTS_TEXTURE, this)
+        val infoBox = new ListBoxInfo(guiLeft + 25, guiTop + 16, 36, 43, ELEMENTS_TEXTURE, this)
+        infoBox.setDataProvider(getContainer.infoProvider)
+
+        scrollBar.linkElement(listBox)
+
+        listBox.setDataProvider(getContainer.dataProvider)
+
+        elements = listBox :: scrollBar :: infoBox :: List.empty
+
+        val enchantButton = new GuiButton(0, guiLeft + 62, guiTop + 40, 20, 20, "E")
+
+        buttonList.asInstanceOf[java.util.List[GuiButton]].add(enchantButton)
+
+        getContainer.dataProvider.hasUpdated = true
+        getContainer.infoProvider.hasUpdated = true
     }
-  }
 
-  override def handleMouseInput(): Unit = {
-    super.handleMouseInput()
 
-    val eventDWheel = Mouse.getEventDWheel
-    val mouseX = Mouse.getEventX * width / mc.displayWidth
-    val mouseY = height - Mouse.getEventY * height / mc.displayHeight - 1
-
-    val element = getElementUnderMouse(mouseX, mouseY)
-
-    if (element != null) {
-      element.handleMouseInput(eventDWheel, mouseX, mouseY)
+    override def actionPerformed(button: GuiButton): Unit = {
+        if (button.displayString.equals("E")) {
+            elements.head.actionPerformed(button)
+        }
     }
-  }
 
-  private def getElementUnderMouse(x: Int, y: Int): GuiElement = {
-    for (element <- elements) {
-      if (element.isUnderMouse(x, y)) {
-        return element
-      }
+
+    override def drawScreen(x: Int, y: Int, zDepth: Float): Unit = {
+        super.drawScreen(x, y, zDepth)
+        if (GuiScreen.isShiftKeyDown) {
+            val element = getElementUnderMouse(x, y)
+            if (element != null) element.handleToolTip(x, y)
+        }
     }
-    null
-  }
 
-  override def drawGuiContainerBackgroundLayer(f: Float, x: Int, y: Int): Unit = {
-    drawTextureBackground()
+    override def handleMouseInput(): Unit = {
+        super.handleMouseInput()
 
-    getContainer.setInformationCost(elements.head.asInstanceOf[ListBoxEnchantments].getData)
+        val eventDWheel = Mouse.getEventDWheel
+        val mouseX = Mouse.getEventX * width / mc.displayWidth
+        val mouseY = height - Mouse.getEventY * height / mc.displayHeight - 1
 
-    elements.foreach(_.update())
-    elements.foreach(_.draw())
+        val element = getElementUnderMouse(mouseX, mouseY)
 
-    if (debug) {
-      elements.foreach { e =>
-        Gui.drawRect(e.posX, e.posY, e.posX + e.width, e.posY + e.height,
-          0x8800aa00)
-      }
+        if (element != null) {
+            element.handleMouseInput(eventDWheel, mouseX, mouseY)
+        }
     }
-  }
 
-  def getContainer: ContainerAdvEnchantment = {
-    inventorySlots.asInstanceOf[ContainerAdvEnchantment]
-  }
+    override def drawGuiContainerBackgroundLayer(f: Float, x: Int, y: Int): Unit = {
+        drawTextureBackground()
 
-  private def drawTextureBackground() {
-    GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
-    mc.renderEngine.bindTexture(TEXTURE)
-    drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize)
-  }
+        getContainer.setInformationCost(elements.head.asInstanceOf[ListBoxEnchantments].getData)
 
-  override def mouseMovedOrUp(x: Int, y: Int, event: Int): Unit = {
-    super.mouseMovedOrUp(x, y, event)
+        elements.foreach(_.update())
+        elements.foreach(_.draw())
 
-    val guiElements: List[GuiElement] = elements.filter(e => e.isDragging)
-    if (guiElements.nonEmpty) {
-      val element = guiElements(0)
-
-      if (!element.isInstanceOf[ScrollBar]) {
-        element.mouseMoved(x, y)
-      }
-
-      if (event != -1) {
-        element.setDragging(x, y, b = false)
-      }
+        if (debug) {
+            elements.foreach { e =>
+                Gui.drawRect(e.posX, e.posY, e.posX + e.width, e.posY + e.height,
+                    0x8800aa00)
+            }
+        }
     }
-  }
 
-  override def mouseClicked(x: Int, y: Int, z: Int): Unit = {
-    super.mouseClicked(x, y, z)
 
-    val guiElements: List[GuiElement] = elements.filter(e => e.isDragging)
-    if (guiElements.isEmpty) {
+    override def mouseMovedOrUp(x: Int, y: Int, event: Int): Unit = {
+        super.mouseMovedOrUp(x, y, event)
 
-      val elementClicked = getElementUnderMouse(x, y)
+        val guiElements: List[GuiElement] = elements.filter(e => e.isDragging)
+        if (guiElements.nonEmpty) {
+            val element = guiElements(0)
 
-      if (elementClicked != null) {
-        elementClicked.setDragging(x, y, b = true)
-      }
+            if (!element.isInstanceOf[ScrollBar]) {
+                element.mouseMoved(x, y)
+            }
+
+            if (event != -1) {
+                element.setDragging(x, y, b = false)
+            }
+        }
     }
-  }
 
-  def drawString(text: String, x: Int, y: Int, color: Int) {
-    fontRendererObj.drawString(text, x, y, color)
-  }
+    override def mouseClicked(x: Int, y: Int, z: Int): Unit = {
+        super.mouseClicked(x, y, z)
+
+        val guiElements: List[GuiElement] = elements.filter(e => e.isDragging)
+        if (guiElements.isEmpty) {
+
+            val elementClicked = getElementUnderMouse(x, y)
+
+            if (elementClicked != null) {
+                elementClicked.setDragging(x, y, b = true)
+            }
+        }
+    }
+
+    def drawString(text: String, x: Int, y: Int, color: Int) {
+        fontRendererObj.drawString(text, x, y, color)
+    }
+
+    def getContainer: ContainerAdvEnchantment = {
+        inventorySlots.asInstanceOf[ContainerAdvEnchantment]
+    }
+
+    private def getElementUnderMouse(x: Int, y: Int): GuiElement = {
+        for (element <- elements) {
+            if (element.isUnderMouse(x, y)) {
+                return element
+            }
+        }
+        null
+    }
+
+    private def drawTextureBackground() {
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
+        mc.renderEngine.bindTexture(TEXTURE)
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize)
+    }
 }

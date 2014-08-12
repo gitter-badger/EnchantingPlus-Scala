@@ -7,36 +7,36 @@ import net.minecraft.entity.player.EntityPlayer
 
 class EnchantPacket(enchantments: Map[Enchantment, Int], cost: Int) extends EplusPacket {
 
-  var m_enchantments = collection.mutable.Map.empty[Int, Int]
-  var m_cost = cost
+    var m_enchantments = collection.mutable.Map.empty[Int, Int]
+    var m_cost = cost
 
-  def this() = this(Map.empty[Enchantment, Int], 0)
+    def this() = this(Map.empty[Enchantment, Int], 0)
 
-  override def readData(buf: ByteBuf): Unit = {
-    val length = buf.readInt()
+    override def readData(buf: ByteBuf): Unit = {
+        val length = buf.readInt()
 
-    for (i <- 0 until length) {
-      val enchantment = buf.readInt()
-      val level = buf.readInt()
+        for (i <- 0 until length) {
+            val enchantment = buf.readInt()
+            val level = buf.readInt()
 
-      m_enchantments = m_enchantments.++=(Map(enchantment -> level))
+            m_enchantments = m_enchantments.++=(Map(enchantment -> level))
+        }
+        m_cost = buf.readInt()
     }
-    m_cost = buf.readInt()
-  }
 
-  override def writeData(buf: ByteBuf): Unit = {
-    val length = enchantments.size
+    override def writeData(buf: ByteBuf): Unit = {
+        val length = enchantments.size
 
-    buf.writeInt(length)
-    for (enchantment <- enchantments) {
-      buf.writeInt(enchantment._1.effectId)
-      buf.writeInt(enchantment._2)
+        buf.writeInt(length)
+        for (enchantment <- enchantments) {
+            buf.writeInt(enchantment._1.effectId)
+            buf.writeInt(enchantment._2)
+        }
+        buf.writeInt(cost)
     }
-    buf.writeInt(cost)
-  }
 
-  override def execute(player: EntityPlayer): Unit = {
-    player.openContainer.asInstanceOf[ContainerAdvEnchantment].tryEnchantItem(player, m_enchantments, m_cost)
-    player.openContainer.detectAndSendChanges()
-  }
+    override def execute(player: EntityPlayer): Unit = {
+        player.openContainer.asInstanceOf[ContainerAdvEnchantment].tryEnchantItem(player, m_enchantments, m_cost)
+        player.openContainer.detectAndSendChanges()
+    }
 }
