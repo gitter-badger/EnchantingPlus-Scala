@@ -15,7 +15,12 @@ object ToolTipHandler {
     private var toolTips = Map.empty[Enchantment, String]
 
     private def needsUpdating(file: File): Boolean = {
-        Source.fromURL(upstreamLocation).mkString != Source.fromFile(file).mkString
+        try {
+            Source.fromURL(upstreamLocation).mkString != Source.fromFile(file).mkString
+        }
+        catch {
+            case e: Throwable => false
+        }
     }
 
     private def downloadFromStream(file: File): Unit = {
