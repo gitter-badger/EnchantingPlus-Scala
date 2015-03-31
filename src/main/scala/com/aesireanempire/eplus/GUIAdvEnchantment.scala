@@ -106,9 +106,21 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
         }
     }
 
+    override def mouseClickMove(x: Int, y: Int, clickedMouseButton: Int, timeSinceLastClick: Long) : Unit = {
+        super.mouseClickMove(x, y, clickedMouseButton, timeSinceLastClick)
 
-    override def mouseMovedOrUp(x: Int, y: Int, event: Int): Unit = {
-        super.mouseMovedOrUp(x, y, event)
+        val guiElements: List[GuiElement] = elements.filter(e => e.isDragging)
+        if (guiElements.nonEmpty) {
+            val element = guiElements(0)
+
+            if (!element.isInstanceOf[ScrollBar]) {
+                element.mouseMoved(x, y)
+            }
+        }
+    }
+
+    override def mouseReleased(x: Int, y: Int, state: Int): Unit = {
+        super.mouseReleased(x, y, state)
 
         val guiElements: List[GuiElement] = elements.filter(e => e.isDragging)
         if (guiElements.nonEmpty) {
@@ -118,9 +130,7 @@ class GUIAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantmentTabl
                 element.mouseMoved(x, y)
             }
 
-            if (event != -1) {
-                element.setDragging(x, y, b = false)
-            }
+            element.setDragging(x, y, b = false)
         }
     }
 

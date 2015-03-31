@@ -1,7 +1,7 @@
 package com.aesireanempire.eplus.gui.elements
 
 import com.aesireanempire.eplus.GUIAdvEnchantment
-import cpw.mods.fml.client.FMLClientHandler
+import net.minecraftforge.fml.client.FMLClientHandler
 import net.minecraft.client.gui.{Gui, GuiButton}
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11

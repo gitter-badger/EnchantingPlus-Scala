@@ -1,6 +1,6 @@
 package com.aesireanempire.eplus.network
 
-import cpw.mods.fml.common.network.{NetworkRegistry, FMLIndexedMessageToMessageCodec}
+import net.minecraftforge.fml.common.network.{NetworkRegistry, FMLIndexedMessageToMessageCodec}
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import net.minecraft.entity.player.EntityPlayer

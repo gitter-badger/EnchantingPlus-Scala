@@ -7,6 +7,7 @@ import net.minecraft.enchantment.{Enchantment, EnchantmentData, EnchantmentHelpe
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.{Container, IInventory, Slot}
 import net.minecraft.item.ItemStack
+import net.minecraft.util.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 
@@ -105,25 +106,27 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
 
     private def getNumberOfBookcases: Float = {
         var temp: Float = 0
-        val world: World = tile.getWorldObj
-        val xCoord: Int = tile.xCoord
-        val yCoord: Int = tile.yCoord
-        val zCoord: Int = tile.zCoord
+        val world: World = tile.getWorld
+        val xCoord: Int = tile.getPos.getX
+        val yCoord: Int = tile.getPos.getY
+        val zCoord: Int = tile.getPos.getZ
 
         for (
             x <- -1 to 1;
             z <- -1 to 1
         ) {
 
-            if ((x != 0 || z != 0) && world.isAirBlock(xCoord + x, yCoord, zCoord + z) && world.isAirBlock(xCoord + x, yCoord + 1, zCoord + z)) {
-                temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord, zCoord + z * 2)
-                temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord + 1, zCoord + z * 2)
+            if ((x != 0 || z != 0) &&
+              world.isAirBlock(new BlockPos(xCoord + x, yCoord, zCoord + z)) &&
+              world.isAirBlock(new BlockPos(xCoord + x, yCoord + 1, zCoord + z))) {
+                temp += ForgeHooks.getEnchantPower(world, new BlockPos(xCoord + x * 2, yCoord, zCoord + z * 2))
+                temp += ForgeHooks.getEnchantPower(world, new BlockPos(xCoord + x * 2, yCoord + 1, zCoord + z * 2))
 
                 if (x != 0 && z != 0) {
-                    temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord, zCoord + z)
-                    temp += ForgeHooks.getEnchantPower(world, xCoord + x * 2, yCoord + 1, zCoord + z)
-                    temp += ForgeHooks.getEnchantPower(world, xCoord + x, yCoord, zCoord + z * 2)
-                    temp += ForgeHooks.getEnchantPower(world, xCoord + x, yCoord + 1, zCoord + z * 2)
+                    temp += ForgeHooks.getEnchantPower(world, new BlockPos(xCoord + x * 2, yCoord, zCoord + z))
+                    temp += ForgeHooks.getEnchantPower(world, new BlockPos(xCoord + x * 2, yCoord + 1, zCoord + z))
+                    temp += ForgeHooks.getEnchantPower(world, new BlockPos(xCoord + x, yCoord, zCoord + z * 2))
+                    temp += ForgeHooks.getEnchantPower(world, new BlockPos(xCoord + x, yCoord + 1, zCoord + z * 2))
                 }
             }
         }

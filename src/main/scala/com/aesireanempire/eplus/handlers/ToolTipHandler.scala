@@ -3,6 +3,7 @@ package com.aesireanempire.eplus.handlers
 import java.io.File
 import java.net.URL
 
+import com.aesireanempire.eplus.AdvEnchantmentHelper
 import net.minecraft.enchantment.Enchantment
 
 import scala.collection.mutable
@@ -55,7 +56,7 @@ object ToolTipHandler {
     }
 
     private def getEnchantmentByName(name: String): Option[Enchantment] = {
-        for (enchantment <- Enchantment.enchantmentsList.filter(_ != null)) {
+        for (enchantment <- AdvEnchantmentHelper.getEnchantmentList) {
             if (enchantment.getName.equals(name)) {
                 return Some(enchantment)
             }
