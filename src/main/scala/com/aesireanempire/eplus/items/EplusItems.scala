@@ -10,7 +10,7 @@ object EplusItems {
      * Creates any item objects that need to be initialized.
      */
     def preInit() = {
-        GameRegistry.registerItem(ItemAdvTableUpgrade, "advTableUpgrade")
+        GameRegistry.registerItem(ItemAdvTableUpgrade, ItemAdvTableUpgrade.NAME)
 
     }
 

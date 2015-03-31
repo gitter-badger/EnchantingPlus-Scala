@@ -7,7 +7,7 @@ import com.aesireanempire.eplus.handlers.{ToolTipHandler, ConfigHandler, GUIHand
 import com.aesireanempire.eplus.items.EplusItems
 import com.aesireanempire.eplus.network.{CommonProxy, EplusChannelHandler, EplusPacket, PacketHandler}
 import net.minecraftforge.fml.common.Mod.EventHandler
-import net.minecraftforge.fml.common.{FMLLog, SidedProxy, Mod}
+import net.minecraftforge.fml.common.{SidedProxy, Mod}
 import net.minecraftforge.fml.common.event._
 import net.minecraftforge.fml.common.network.{FMLOutboundHandler, FMLEmbeddedChannel, NetworkRegistry}
 import net.minecraftforge.fml.relauncher.Side
@@ -38,7 +38,7 @@ object EnchantingPlus {
 
     @EventHandler
     def init(event: FMLInitializationEvent) {
-        channels = NetworkRegistry.INSTANCE.newChannel("eplus", new EplusChannelHandler, new PacketHandler).asScala
+        channels = NetworkRegistry.INSTANCE.newChannel(MODID, new EplusChannelHandler, new PacketHandler).asScala
 
         //Register WorldGen
         //Register Recipes
@@ -49,8 +49,6 @@ object EnchantingPlus {
         //Register Events
         NetworkRegistry.INSTANCE.registerGuiHandler(this, GUIHandler)
         proxy.init()
-
-        FMLLog.info("EnchantingPlus has been loaded!")
     }
 
     @EventHandler

@@ -14,8 +14,9 @@ import net.minecraft.world.World
 
 object BlockAdvEnchantmentTable extends BlockEnchantmentTable() {
 
+    final val NAME = "advEnchantmentTable"
     setCreativeTab(CreativeTabBlocks)
-    setUnlocalizedName("advEnchantmentTable")
+    setUnlocalizedName(NAME)
 
     override def createNewTileEntity(world: World, meta: Int): TileEntity = new TileEntityAdvEnchantmentTable()
 
@@ -38,7 +39,7 @@ object BlockAdvEnchantmentTable extends BlockEnchantmentTable() {
         //world.setBlockMetadataWithNotify(x, y, z, direction, 2)
     }
 
-    override def isFullCube(): Boolean = false
+    override def isFullCube: Boolean = false
 
     override def isOpaqueCube: Boolean = false
 }

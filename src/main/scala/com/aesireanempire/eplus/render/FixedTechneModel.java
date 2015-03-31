@@ -36,6 +36,7 @@ import java.util.zip.ZipInputStream;
  *
  * @author iChun, Calclavia
  */
+@SuppressWarnings("ALL")
 @SideOnly(Side.CLIENT)
 public class FixedTechneModel extends ModelBase implements IModelCustom {
     public static final List<String> cubeTypes = Arrays.asList("d9e621f7-957f-4b77-b1ae-20dcd0da7751", "de81aa14-bd60-4228-8d8d-5238bcd3caaa");

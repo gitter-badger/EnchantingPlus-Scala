@@ -10,8 +10,9 @@ import net.minecraft.world.World
 
 object ItemAdvTableUpgrade extends Item {
 
+    final val NAME = "advTableUpgrade"
     setCreativeTab(CreativeTabItems)
-    setUnlocalizedName("advTableUpgrade")
+    setUnlocalizedName(NAME)
 
     override def onItemUse(itemStack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX : Float, hitY : Float, hitZ : Float): Boolean = {
         if (!world.isRemote) {

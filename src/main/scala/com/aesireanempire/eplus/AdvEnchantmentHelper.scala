@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack
 import scala.collection.JavaConversions._
 
 object AdvEnchantmentHelper {
-    def getEnchantmentList(): Array[Enchantment] = {
+    def getEnchantmentList: Array[Enchantment] = {
         // We can't access enchantmentsList directly, but we know it is an array of 256 items referenced by their index.
         var enchantmentList: List[Enchantment] = List()
         for( i <- 0 to 255) {
@@ -32,7 +32,7 @@ object AdvEnchantmentHelper {
             possibleEnchantments = possibleEnchantments.filter(e => e.canApplyTogether(enchantment.enchantmentobj))
         }
 
-        enchantmentsOnItem ++: possibleEnchantments.map(e => new EnchantmentData(e, 0)).toArray
+        enchantmentsOnItem ++: possibleEnchantments.map(e => new EnchantmentData(e, 0))
     }
 
     def getEnchantmentsOn(itemStack: ItemStack): Array[EnchantmentData] = {
