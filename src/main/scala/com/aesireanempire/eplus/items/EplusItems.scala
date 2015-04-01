@@ -1,6 +1,6 @@
 package com.aesireanempire.eplus.items
 
-import cpw.mods.fml.common.registry.GameRegistry
+import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraft.init.{Blocks, Items}
 import net.minecraft.item.ItemStack
 
@@ -10,7 +10,7 @@ object EplusItems {
      * Creates any item objects that need to be initialized.
      */
     def preInit() = {
-        GameRegistry.registerItem(ItemAdvTableUpgrade, ItemAdvTableUpgrade.getUnlocalizedName)
+        GameRegistry.registerItem(ItemAdvTableUpgrade, ItemAdvTableUpgrade.NAME)
 
     }
 

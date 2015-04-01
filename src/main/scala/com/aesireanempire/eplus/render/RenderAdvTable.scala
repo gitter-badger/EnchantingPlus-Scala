@@ -1,7 +1,7 @@
 package com.aesireanempire.eplus.render
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
-import cpw.mods.fml.client.FMLClientHandler
+import net.minecraftforge.fml.client.FMLClientHandler
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
@@ -14,7 +14,7 @@ object RenderAdvTable extends TileEntitySpecialRenderer {
     val model = AdvancedModelLoader.loadModel(new ResourceLocation("eplus", "models/table.tcn"))
     val texture = new ResourceLocation("eplus", "textures/blocks/table.png")
 
-    override def renderTileEntityAt(te: TileEntity, x: Double, y: Double, z: Double, time: Float) {
+    override def renderTileEntityAt(te: TileEntity, x: Double, y: Double, z: Double, time: Float, var9: Int) {
 
         glPushMatrix()
         glTranslated(x + 0.5, y + 0.5, z + 0.5)

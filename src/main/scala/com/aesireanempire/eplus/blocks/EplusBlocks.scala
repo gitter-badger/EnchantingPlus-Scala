@@ -1,7 +1,8 @@
 package com.aesireanempire.eplus.blocks
 
+import com.aesireanempire.eplus.EnchantingPlus
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
-import cpw.mods.fml.common.registry.GameRegistry
+import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraft.init.{Blocks, Items}
 import net.minecraft.item.ItemStack
 
@@ -12,8 +13,8 @@ object EplusBlocks {
      * Creates any block objects that need to be initialized.
      */
     def preInit() = {
-        GameRegistry.registerBlock(BlockAdvEnchantmentTable, BlockAdvEnchantmentTable.getUnlocalizedName)
-        GameRegistry.registerTileEntity(classOf[TileEntityAdvEnchantmentTable], "eplus:advEnchantmentTable")
+        GameRegistry.registerBlock(BlockAdvEnchantmentTable, BlockAdvEnchantmentTable.NAME)
+        GameRegistry.registerTileEntity(classOf[TileEntityAdvEnchantmentTable], EnchantingPlus.MODID + ":" + BlockAdvEnchantmentTable.NAME)
     }
 
     /**

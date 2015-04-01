@@ -1,32 +1,32 @@
 package com.aesireanempire.eplus
 
 import java.io.File
-import java.nio.file.Path
 
 import com.aesireanempire.eplus.blocks.EplusBlocks
 import com.aesireanempire.eplus.handlers.{ToolTipHandler, ConfigHandler, GUIHandler}
 import com.aesireanempire.eplus.items.EplusItems
 import com.aesireanempire.eplus.network.{CommonProxy, EplusChannelHandler, EplusPacket, PacketHandler}
-import cpw.mods.fml.common.{SidedProxy, Mod}
-import cpw.mods.fml.common.event._
-import cpw.mods.fml.common.network.{FMLOutboundHandler, FMLEmbeddedChannel, NetworkRegistry}
-import cpw.mods.fml.relauncher.Side
+import net.minecraftforge.fml.common.Mod.EventHandler
+import net.minecraftforge.fml.common.{SidedProxy, Mod}
+import net.minecraftforge.fml.common.event._
+import net.minecraftforge.fml.common.network.{FMLOutboundHandler, FMLEmbeddedChannel, NetworkRegistry}
+import net.minecraftforge.fml.relauncher.Side
 
 import scala.collection.JavaConverters._
-import scala.reflect.io.Path
 
 
-@Mod(name = EnchantingPlus.MODNAME, modid = EnchantingPlus.MODID, modLanguage = "scala")
+@Mod(name = EnchantingPlus.MODNAME, modid = EnchantingPlus.MODID, version = EnchantingPlus.VERSION, modLanguage = "scala")
 object EnchantingPlus {
     final val MODNAME = "Enchanting Plus"
     final val MODID = "eplus"
+    final val VERSION = "3.1.0a1"
 
     var channels = collection.mutable.Map.empty[Side, FMLEmbeddedChannel]
 
     @SidedProxy(clientSide = "com.aesireanempire.eplus.network.ClientProxy", serverSide = "com.aesireanempire.eplus.network.CommonProxy")
     var proxy: CommonProxy = null
 
-    @Mod.EventHandler
+    @EventHandler
     def preInit(event: FMLPreInitializationEvent) {
         ConfigHandler.init(event.getSuggestedConfigurationFile)
 
@@ -36,9 +36,9 @@ object EnchantingPlus {
         ToolTipHandler.init(new File(event.getModConfigurationDirectory.toPath + File.separator + ".."))
     }
 
-    @Mod.EventHandler
+    @EventHandler
     def init(event: FMLInitializationEvent) {
-        channels = NetworkRegistry.INSTANCE.newChannel("eplus", new EplusChannelHandler, new PacketHandler).asScala
+        channels = NetworkRegistry.INSTANCE.newChannel(MODID, new EplusChannelHandler, new PacketHandler).asScala
 
         //Register WorldGen
         //Register Recipes
@@ -51,7 +51,7 @@ object EnchantingPlus {
         proxy.init()
     }
 
-    @Mod.EventHandler
+    @EventHandler
     def postInit(event: FMLPostInitializationEvent) {
 
     }

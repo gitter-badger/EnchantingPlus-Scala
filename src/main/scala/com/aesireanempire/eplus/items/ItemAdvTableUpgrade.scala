@@ -5,20 +5,21 @@ import com.aesireanempire.eplus.tabs.CreativeTabItems
 import net.minecraft.block.BlockEnchantmentTable
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.util.{EnumFacing, BlockPos}
 import net.minecraft.world.World
 
 object ItemAdvTableUpgrade extends Item {
 
+    final val NAME = "advTableUpgrade"
     setCreativeTab(CreativeTabItems)
-    setUnlocalizedName("advTableUpgrade")
-    setTextureName("eplus:enchanting_table_upgrade")
+    setUnlocalizedName(NAME)
 
-    override def onItemUse(itemStack: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, side: Int, p_77648_8_ : Float, p_77648_9_ : Float, p_77648_10_ : Float): Boolean = {
+    override def onItemUse(itemStack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX : Float, hitY : Float, hitZ : Float): Boolean = {
         if (!world.isRemote) {
-            if (world.getBlock(x, y, z).isInstanceOf[BlockEnchantmentTable]) {
-                world.setBlock(x, y, z, BlockAdvEnchantmentTable)
-                world.setTileEntity(x, y, z, BlockAdvEnchantmentTable.createNewTileEntity(world, 0))
-                world.getBlock(x, y, z).onBlockPlacedBy(world, x, y, z, player, itemStack)
+            if (world.getBlockState(pos).getBlock.isInstanceOf[BlockEnchantmentTable]) {
+                world.setBlockState(pos, BlockAdvEnchantmentTable.getDefaultState)
+                world.setTileEntity(pos, BlockAdvEnchantmentTable.createNewTileEntity(world, 0))
+                world.getBlockState(pos).getBlock.onBlockPlacedBy(world, pos, BlockAdvEnchantmentTable.getDefaultState, player, itemStack)
                 itemStack.stackSize -= 1
                 return true
             }
