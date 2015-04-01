@@ -2,5 +2,10 @@ language: scala
 jdk:
   - openjdk7
 
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
 install: ./gradlew setupCIWorkspace -S
 script: ./gradlew build -S
