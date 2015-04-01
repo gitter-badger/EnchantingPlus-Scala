@@ -6,7 +6,6 @@ import com.aesireanempire.eplus.blocks.EplusBlocks
 import com.aesireanempire.eplus.handlers.{ToolTipHandler, ConfigHandler, GUIHandler}
 import com.aesireanempire.eplus.items.EplusItems
 import com.aesireanempire.eplus.network.{EplusChannelHandler, EplusPacket, PacketHandler}
-import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event._
 import net.minecraftforge.fml.common.network.{FMLOutboundHandler, FMLEmbeddedChannel, NetworkRegistry}
 import net.minecraftforge.fml.relauncher.Side
@@ -16,9 +15,9 @@ import scala.collection.JavaConverters._
 
 object EnchantingPlus {
 
+    var mod: EnchantingPlusMod = null
     var channels = collection.mutable.Map.empty[Side, FMLEmbeddedChannel]
 
-    @EventHandler
     def preInit(event: FMLPreInitializationEvent) {
         ConfigHandler.init(event.getSuggestedConfigurationFile)
 
@@ -28,8 +27,8 @@ object EnchantingPlus {
         ToolTipHandler.init(new File(event.getModConfigurationDirectory.toPath + File.separator + ".."))
     }
 
-    @EventHandler
-    def init(event: FMLInitializationEvent) {
+    def init(inMod: EnchantingPlusMod, event: FMLInitializationEvent) {
+        mod = inMod // Keep track of this exact instance of the mod, we need will need this later
         channels = NetworkRegistry.INSTANCE.newChannel(EnchantingPlusMod.MODID, new EplusChannelHandler, new PacketHandler).asScala
 
         //Register WorldGen
@@ -39,13 +38,8 @@ object EnchantingPlus {
         EplusBlocks.init()
 
         //Register Events
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, GUIHandler)
+        NetworkRegistry.INSTANCE.registerGuiHandler(mod, GUIHandler)
         EnchantingPlusMod.proxy.init()
-    }
-
-    @EventHandler
-    def postInit(event: FMLPostInitializationEvent) {
-
     }
 
     def sendToServer(packet: EplusPacket)= {
