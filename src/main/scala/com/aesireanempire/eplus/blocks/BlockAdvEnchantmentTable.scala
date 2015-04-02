@@ -26,7 +26,7 @@ object BlockAdvEnchantmentTable extends BlockEnchantmentTable() {
             return false
         }
 
-        player.openGui(EnchantingPlus, 0, world, pos.getX, pos.getY, pos.getZ)
+        player.openGui(EnchantingPlus.mod, 0, world, pos.getX, pos.getY, pos.getZ)
 
         true
     }
