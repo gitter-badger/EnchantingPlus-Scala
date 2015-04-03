@@ -21,9 +21,10 @@ apply plugin: 'forge'
 version = "3.1.0a2"
 group= "com.aesireanempire.eplus" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "EnchantingPlus"
+def minecraft_version = "1.8"
 
 minecraft {
-    version = "1.8-11.14.1.1334"
+    version = "${minecraft_version}-11.14.1.1334"
     assetDir = "eclipse/assets"
 
     // the mappings can be changed at any time, and must be in the following format.
@@ -51,7 +52,23 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
-version = "${project.minecraft.version}-${project.version}"
+task buildInfo() {
+    def cmd = "git rev-parse --short HEAD"
+    def proc = cmd.execute()
+    proc.waitFor()
+    if (proc.exitValue() == 0) {
+        ext.revision = proc.text.trim()
+    } else {
+        ext.revision = "GITBORK"
+    }
+
+    ext.buildNum = System.getenv().BUILD_NUMBER != null ? "${System.getenv().BUILD_NUMBER}" : "${project.buildInfo.revision}"
+}
+
+ext.artifact_version = 'NFG'
+artifact_version = System.getenv().GIT_BRANCH  == "origin/master" ? "${version}" : "${version}.${project.buildInfo.buildNum}"
+
+version = "${minecraft_version}-${artifact_version}"
 
 processResources
 {
