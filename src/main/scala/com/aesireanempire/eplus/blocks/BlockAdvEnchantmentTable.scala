@@ -18,6 +18,8 @@ object BlockAdvEnchantmentTable extends BlockEnchantmentTable() {
 
     setCreativeTab(CreativeTabBlocks)
     setBlockName("advEnchantmentTable")
+    setHardness(10.0F)
+    setResistance(4000.0F)
 
     override def createNewTileEntity(world: World, meta: Int): TileEntity = new TileEntityAdvEnchantmentTable()
 
