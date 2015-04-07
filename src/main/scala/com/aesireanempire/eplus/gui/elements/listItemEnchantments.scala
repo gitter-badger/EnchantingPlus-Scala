@@ -1,7 +1,8 @@
 
 package com.aesireanempire.eplus.gui.elements
 
-import com.aesireanempire.eplus.handlers.ToolTipHandler
+import com.aesireanempire.eplus.EnchantingPlus
+import com.aesireanempire.eplus.handlers.{ConfigHandler, ToolTipHandler}
 import net.minecraft.client.gui.Gui
 import net.minecraft.enchantment.{Enchantment, EnchantmentData}
 
@@ -43,7 +44,12 @@ class listItemEnchantments(enchantmentData: EnchantmentData, x: Int, y: Int, wid
     }
 
     def changeLevel(dLevel: Int): Unit = {
-        level = dLevel
+        var tempLevel = dLevel
+        if (!ConfigHandler.allowDisenchanting) {
+            if (tempLevel < oldLevel) tempLevel = oldLevel
+        }
+
+        level = tempLevel
 
         if (level <= 0) level = 0
 

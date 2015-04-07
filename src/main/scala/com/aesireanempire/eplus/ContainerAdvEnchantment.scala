@@ -2,6 +2,7 @@ package com.aesireanempire.eplus
 
 import com.aesireanempire.eplus.blocks.entities.TileEntityAdvEnchantmentTable
 import com.aesireanempire.eplus.gui.elements.{DataProviderEnchantmentData, DataProviderInformation, ListItem, listItemEnchantments}
+import com.aesireanempire.eplus.handlers.ConfigHandler
 import com.aesireanempire.eplus.inventory.{SlotArmor, SlotEnchantment, TableInventory}
 import net.minecraft.enchantment.{Enchantment, EnchantmentData, EnchantmentHelper}
 import net.minecraft.entity.player.EntityPlayer
@@ -150,6 +151,10 @@ class ContainerAdvEnchantment(player: EntityPlayer, tile: TileEntityAdvEnchantme
                 return false
             }
             if (cost >= 0 && cost > getNumberOfBookcases) {
+                return false
+            }
+
+            if (cost < 0 && !ConfigHandler.allowDisenchanting) {
                 return false
             }
         }

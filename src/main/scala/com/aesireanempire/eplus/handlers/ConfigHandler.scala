@@ -8,6 +8,8 @@ import net.minecraftforge.common.config.Configuration
  * Utility object for manipulating configuration files
  */
 object ConfigHandler {
+    var allowDisenchanting : Boolean = false
+
     private var configuration: Configuration = null
 
     /**
@@ -21,8 +23,15 @@ object ConfigHandler {
 
         loadDefaults()
 
+        configuration.setCategoryRequiresMcRestart("Server", true)
+
         if (configuration.hasChanged) configuration.save()
     }
 
-    private def loadDefaults() = {}
+    private def loadDefaults() = {
+        allowDisenchanting = configuration.getBoolean("AllowDisenchanting", "Server",
+            true,
+            "Setting this to false will not allow anyone to disenchant any items."
+        )
+    }
 }
