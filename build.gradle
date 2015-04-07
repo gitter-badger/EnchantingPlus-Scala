@@ -23,8 +23,14 @@ group= "com.aesireanempire.eplus" // http://maven.apache.org/guides/mini/guide-n
 archivesBaseName = "EnchantingPlus"
 
 minecraft {
-    version = "1.7.10-10.13.0.1180"
+    version = "1.7.10-10.13.3.1355-1.7.10"
     assetDir = "eclipse/assets"
+}
+
+idea {
+  module { 
+    inheritOutputDirs = true
+    }
 }
 
 dependencies {
@@ -55,11 +61,11 @@ processResources
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
+
         // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-        
+
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
